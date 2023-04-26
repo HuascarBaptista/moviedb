@@ -1,6 +1,7 @@
 plugins {
     id "com.android.application"
     id 'kotlin-android'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -39,7 +40,13 @@ android {
 }
 
 dependencies {
+    // Networking
+    implementation networkDependencies.retrofit
+    implementation networkDependencies.retrofitGson
+    implementation networkDependencies.okHttp
+    implementation networkDependencies.okHttpLogging
 
+    // Android Presentation
     implementation presentationDependencies.coreKtx
     implementation presentationDependencies.appCompat
     implementation presentationDependencies.material
@@ -51,6 +58,7 @@ dependencies {
     implementation presentationDependencies.recyclerView
     implementation presentationDependencies.cardView
 
+    // Tests
     testImplementation testDependencies.junit
     androidTestImplementation testDependencies.espresso
     androidTestImplementation testDependencies.extJunit

@@ -22,7 +22,7 @@
             tools:src="@color/placeholder" />
 
         <View
-            android:id="@+id/content_guideline"
+            android:id="@+id/resource_guideline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -39,7 +39,7 @@
             app:cardElevation="@dimen/card_elevation"
             app:layout_constraintDimensionRatio="w,2:3"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/content_guideline">
+            app:layout_constraintTop_toBottomOf="@+id/resource_guideline">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageView_poster"
@@ -56,7 +56,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cardView_poster"
             app:layout_constraintTop_toBottomOf="@id/imageView_cover"
-            tools:text="Content Title" />
+            tools:text="Resource Title" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageView_rating"
@@ -86,7 +86,7 @@
             app:constraint_referenced_ids="cardView_poster,imageView_rating" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textView_title_description"
+            android:id="@+id/textView_title_overview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/general_margin"
@@ -96,13 +96,13 @@
             app:layout_constraintTop_toBottomOf="@+id/main_section_barrier" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textView_description"
+            android:id="@+id/textView_overview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/general_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_title_description"
+            app:layout_constraintTop_toBottomOf="@+id/textView_title_overview"
             tools:text="Lorem ipsum" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -114,7 +114,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView_description" />
+            app:layout_constraintTop_toBottomOf="@id/textView_overview" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_media"
@@ -133,7 +133,7 @@
             android:layout_height="@dimen/big_icon_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_description" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_overview" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
