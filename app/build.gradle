@@ -1,0 +1,57 @@
+plugins {
+    id "com.android.application"
+    id 'kotlin-android'
+}
+
+android {
+    namespace 'com.hebs.moviedb'
+    compileSdk 33
+
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.hebs.moviedb"
+        minSdkVersion globalConfiguration["androidMinSdkVersion"]
+        targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+}
+
+dependencies {
+
+    implementation presentationDependencies.coreKtx
+    implementation presentationDependencies.appCompat
+    implementation presentationDependencies.material
+    implementation presentationDependencies.constraintLayout
+    implementation presentationDependencies.liveData
+    implementation presentationDependencies.viewModel
+    implementation presentationDependencies.navigationFragment
+    implementation presentationDependencies.navigationUI
+    implementation presentationDependencies.recyclerView
+    implementation presentationDependencies.cardView
+
+    testImplementation testDependencies.junit
+    androidTestImplementation testDependencies.espresso
+    androidTestImplementation testDependencies.extJunit
+}
