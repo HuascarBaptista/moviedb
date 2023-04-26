@@ -2,6 +2,8 @@ plugins {
     id "com.android.application"
     id 'kotlin-android'
     id 'kotlin-parcelize'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -9,8 +11,6 @@ android {
     compileSdk 33
 
     def globalConfiguration = rootProject.extensions.getByName("ext")
-    compileSdk 33
-
     defaultConfig {
         applicationId "com.hebs.moviedb"
         minSdkVersion globalConfiguration["androidMinSdkVersion"]
@@ -18,6 +18,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         versionCode 1
         versionName "1.0"
+
+        buildConfigField "String", "TMDB_BASE_URL", "\"https://api.themoviedb.org\""
+        buildConfigField "String", "TMDB_API_KEY_CODE", "\"cc6e751764a8263bedc959df0534d07d\""
     }
 
     buildFeatures {
@@ -62,4 +65,17 @@ dependencies {
     testImplementation testDependencies.junit
     androidTestImplementation testDependencies.espresso
     androidTestImplementation testDependencies.extJunit
+
+    // Dependency injection
+    implementation appDependencies.hilt
+    kapt appDependencies.hiltCompiler
+
+    // Reactive
+    implementation appDependencies.rxJava
+    implementation appDependencies.rxAndroid
+    implementation appDependencies.rxAdapter
+}
+
+kapt {
+    correctErrorTypes true
 }

@@ -4,7 +4,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
+import com.hebs.moviedb.data.mappers.MapperBase
+import com.hebs.moviedb.data.model.ResourceEntity
+import com.hebs.moviedb.data.model.ResourceEntityResponse
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -60,3 +65,24 @@ fun <T> Fragment.viewBinding(initialize: () -> T): ReadOnlyProperty<Fragment, T>
                 }
         }
     }
+
+
+fun <T : Any> Single<T>.applySchedulers(): Single<T> {
+    return subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+}
+
+fun <T : Any, P : Any> Single<List<T>>.mapResultApplySchedules(mapper: MapperBase<T, P>): Single<List<P>> {
+    return this.map { resource ->
+        resource.map { resourceEntity ->
+            mapper.fromEntity(resourceEntity)
+        }
+    }.applySchedulers()
+}
+
+fun <P : Any> Single<ResourceEntityResponse>.mapResourceResultApplySchedules(mapper: MapperBase<ResourceEntity, P>): Single<List<P>> =
+    this.map {
+        it.results.map { resourceEntity ->
+            mapper.fromEntity(resourceEntity)
+        }
+    }.applySchedulers()

@@ -1,4 +1,4 @@
-package com.hebs.moviedb.data.wrappers
+package com.hebs.moviedb.data.mappers
 
 import com.hebs.moviedb.data.model.VideoEntity
 import com.hebs.moviedb.domain.model.VideoMedia
@@ -6,7 +6,7 @@ import junit.framework.TestCase
 import org.junit.Test
 
 
-class VideoEntityToVideoMediaWrapperTest {
+class VideoEntityToVideoMediaMapperTest {
 
     @Test
     fun `fromEntity should map VideoEntity to VideoMedia correctly`() {
@@ -18,7 +18,7 @@ class VideoEntityToVideoMediaWrapperTest {
             resourceId = 135
         )
 
-        val result: VideoMedia = VideoEntityToVideoMediaWrapper.fromEntity(entity)
+        val result: VideoMedia = VideoEntityToVideoMediaMapper().fromEntity(entity)
         TestCase.assertEquals(entity.id, result.id)
         TestCase.assertEquals(entity.key, result.key)
         TestCase.assertEquals(entity.name, result.name)

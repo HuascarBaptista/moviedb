@@ -1,10 +1,11 @@
-package com.hebs.moviedb.data.wrappers
+package com.hebs.moviedb.data.mappers
 
 import com.hebs.moviedb.data.model.VideoEntity
 import com.hebs.moviedb.domain.model.VideoMedia
+import javax.inject.Inject
 
-object VideoEntityToVideoMediaWrapper {
-    fun fromEntity(entity: VideoEntity): VideoMedia {
+class VideoEntityToVideoMediaMapper @Inject constructor() : MapperBase<VideoEntity, VideoMedia> {
+    override fun fromEntity(entity: VideoEntity): VideoMedia {
         return VideoMedia(
             id = entity.id,
             key = entity.key,
