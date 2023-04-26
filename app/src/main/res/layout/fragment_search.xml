@@ -1,8 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.genres.SearchByGenresFragment">
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/editText_search_query"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/general_margin"
+            android:background="@color/transparent"
+            android:inputType="textCapWords"
+            android:textAppearance="@style/TextAppearance.TitleListItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <requestFocus />
+        </androidx.appcompat.widget.AppCompatEditText>
+
+        <View
+            android:id="@+id/searchInputDivider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_divider_height"
+            android:layout_marginTop="@dimen/vertical_margin"
+            android:background="@color/white_50"
+            app:layout_constraintEnd_toEndOf="@+id/editText_search_query"
+            app:layout_constraintStart_toStartOf="@+id/editText_search_query"
+            app:layout_constraintTop_toBottomOf="@+id/editText_search_query" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_search_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/general_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchInputDivider"
+            tools:listitem="@layout/item_section_video" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textView_empty_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/general_margin"
+            android:text="@string/empty_search"
+            android:textAppearance="@style/TextAppearance.EmptyMessage"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

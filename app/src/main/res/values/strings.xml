@@ -7,4 +7,5 @@
     <string name="title_home">Home</string>
     <string name="title_search">Buscador</string>
     <string name="title_genres">Generos</string>
+    <string name="empty_search">Lo sentimos\n Sin resultados</string>
 </resources>

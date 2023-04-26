@@ -11,4 +11,5 @@
     <dimen name="card_height">200dp</dimen>
     <dimen name="card_radius">8dp</dimen>
     <dimen name="card_elevation">6dp</dimen>
+    <dimen name="view_divider_height">1dp</dimen>
 </resources>
