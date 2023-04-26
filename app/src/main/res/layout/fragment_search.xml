@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.genres.SearchByGenresFragment">
+    tools:context=".presentation.genres.SelectGenreFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
@@ -38,12 +38,15 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_search_content"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/general_margin"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchInputDivider"
+            app:spanCount="3"
+            tools:itemCount="7"
             tools:listitem="@layout/item_section_video" />
 
         <androidx.appcompat.widget.AppCompatTextView

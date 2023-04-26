@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_genres"
-        android:name="com.hebs.moviedb.presentation.genres.SearchByGenresFragment"
+        android:name="com.hebs.moviedb.presentation.genres.SelectGenreFragment"
         android:label="@string/title_genres"
-        tools:layout="@layout/fragment_search_by_genres" />
+        tools:layout="@layout/fragment_search_by_genre" />
 </navigation>

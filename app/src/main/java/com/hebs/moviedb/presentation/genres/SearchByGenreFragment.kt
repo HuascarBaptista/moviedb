@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.hebs.moviedb.databinding.FragmentSearchByGenresBinding
+import com.hebs.moviedb.databinding.FragmentSearchByGenreBinding
 import com.hebs.moviedb.tools.viewBinding
 
-class SearchByGenresFragment : Fragment() {
+class SearchByGenreFragment : Fragment() {
 
     private val binding by viewBinding {
-        FragmentSearchByGenresBinding.inflate(
+        FragmentSearchByGenreBinding.inflate(
             LayoutInflater.from(requireContext())
         )
     }
