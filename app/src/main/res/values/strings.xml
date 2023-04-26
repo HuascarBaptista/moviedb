@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Hebs Movie Db</string>
+    <string name="section_unavailable">Lo sentimos hubo un error\nIntenta nuevamente en unos minutos.</string>
     <string name="menu_home">Home</string>
-    <string name="menu_search">Search</string>
-    <string name="menu_genres">Genres</string>
+    <string name="menu_search">Buscador</string>
+    <string name="menu_genres">Generos</string>
     <string name="title_home">Home</string>
-    <string name="title_search">Search</string>
-    <string name="title_genres">Genres</string>
+    <string name="title_search">Buscador</string>
+    <string name="title_genres">Generos</string>
 </resources>

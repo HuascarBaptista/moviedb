@@ -2,7 +2,7 @@ package com.hebs.moviedb
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -16,7 +16,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun getNavigationView() = binding.bottomNavView
 
-    private fun currentNavController() = findNavController(R.id.nav_host_fragment_activity_main)
+    private val navController by lazy {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        navHostFragment.navController
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_search, R.id.navigation_genres
             )
         )
-        setupActionBarWithNavController(currentNavController(), appBarConfiguration)
-        getNavigationView().setupWithNavController(currentNavController())
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        getNavigationView().setupWithNavController(navController)
     }
 }
