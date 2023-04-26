@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/small_margin">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/videoImageContainer"
+        android:layout_width="@dimen/media_width"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/small_margin"
+        app:cardCornerRadius="@dimen/card_radius"
+        app:cardElevation="@dimen/card_elevation"
+        app:cardPreventCornerOverlap="true"
+        app:layout_constraintDimensionRatio="w,2:3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageView_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@color/placeholder" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textView_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_margin"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:lines="2"
+        android:textAppearance="@style/TextAppearance.TitleListItem"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/videoImageContainer"
+        app:layout_constraintStart_toStartOf="@+id/videoImageContainer"
+        app:layout_constraintTop_toBottomOf="@+id/videoImageContainer"
+        tools:text="Video name" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageView_play"
+        android:layout_width="@dimen/big_icon_size"
+        android:layout_height="@dimen/big_icon_size"
+        android:elevation="@dimen/card_elevation"
+        android:src="@drawable/ic_play"
+        app:layout_constraintBottom_toBottomOf="@+id/videoImageContainer"
+        app:layout_constraintEnd_toEndOf="@+id/videoImageContainer"
+        app:layout_constraintStart_toStartOf="@+id/videoImageContainer"
+        app:layout_constraintTop_toTopOf="@+id/videoImageContainer"
+        app:tint="@color/white_50" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

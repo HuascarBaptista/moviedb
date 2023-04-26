@@ -8,4 +8,6 @@
     <string name="title_search">Buscador</string>
     <string name="title_genres">Generos</string>
     <string name="empty_search">Lo sentimos\n Sin resultados</string>
+    <string name="subtitle_overview">Descripcion general</string>
+    <string name="title_media">Trailers</string>
 </resources>
