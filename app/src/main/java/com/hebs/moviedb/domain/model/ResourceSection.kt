@@ -1,7 +1,6 @@
 package com.hebs.moviedb.domain.model
 
 data class ResourceSection(
-    val id: Int? = null,
     val categoryName: String,
     val categoryType: SectionType,
     val resources: List<Resource>,
@@ -10,5 +9,12 @@ data class ResourceSection(
 }
 
 enum class SectionType {
-    POPULAR_MOVIES, POPULAR_TV_SHOWS, TOP_RATED_MOVIES, TOP_RATED_TV_SHOWS, SEARCH
+    POPULAR_MOVIES, POPULAR_TV_SHOWS, TOP_RATED_MOVIES, TOP_RATED_TV_SHOWS, SEARCH_MOVIES, SEARCH_TV_SHOWS;
+
+    fun isMovieType(): Boolean {
+        return when (this) {
+            POPULAR_MOVIES, TOP_RATED_MOVIES, SEARCH_MOVIES -> true
+            else -> false
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.hebs.moviedb.presentation.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.fragment.app.viewModels
 import com.hebs.moviedb.databinding.FragmentHomeBinding
 import com.hebs.moviedb.domain.model.ResourceSection
 import com.hebs.moviedb.domain.model.actions.HomeSectionActions
+import com.hebs.moviedb.presentation.detail.DetailListener
 import com.hebs.moviedb.presentation.home.items.SectionHomeItem
 import com.hebs.moviedb.tools.viewBinding
 import com.xwray.groupie.GroupieAdapter
@@ -17,6 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), SectionHomeItem.ResourceSelectedListener {
+
+    private var listener: DetailListener? = null
 
     private val binding by viewBinding {
         FragmentHomeBinding.inflate(
@@ -31,6 +35,11 @@ class HomeFragment : Fragment(), SectionHomeItem.ResourceSelectedListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = binding.root
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = context as? DetailListener
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,7 +68,7 @@ class HomeFragment : Fragment(), SectionHomeItem.ResourceSelectedListener {
         }
     }
 
-    private fun updateSections(sections: List<ResourceSection>) {
+    private fun updateSections(sections: Set<ResourceSection>) {
         val sectionsItems = sections.map {
             SectionHomeItem(
                 it,
@@ -70,10 +79,10 @@ class HomeFragment : Fragment(), SectionHomeItem.ResourceSelectedListener {
     }
 
     private fun showLoading(shouldShow: Boolean) {
-        Toast.makeText(context, shouldShow.toString(), Toast.LENGTH_SHORT).show()
+        binding.progressBarLoading.visibility = if (shouldShow) View.VISIBLE else View.GONE
     }
 
     override fun onItemSelected(id: Int) {
-        TODO("Not yet implemented")
+        listener?.showDetail(id)
     }
 }

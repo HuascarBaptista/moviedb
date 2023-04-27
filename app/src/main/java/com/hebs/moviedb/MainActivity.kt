@@ -7,10 +7,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.hebs.moviedb.databinding.ActivityMainBinding
+import com.hebs.moviedb.presentation.detail.DetailListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), DetailListener {
 
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
@@ -34,5 +35,9 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         getNavigationView().setupWithNavController(navController)
+    }
+
+    override fun showDetail(id: Int) {
+        TODO("Not yet implemented")
     }
 }

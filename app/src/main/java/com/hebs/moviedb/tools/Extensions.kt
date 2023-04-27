@@ -6,10 +6,11 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
 import com.hebs.moviedb.BuildConfig
-import com.hebs.moviedb.data.mappers.MapperBase
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
@@ -75,27 +76,26 @@ fun <T : Any> Flowable<T>.applySchedulers(): Flowable<T> {
     return subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 }
-fun <T : Any> Single<T>.applySchedulers(): Single<T> {
+
+fun <T : Any> Single<T>.applyIoSchedulers(): Single<T> {
     return subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .observeOn(Schedulers.io())
 }
 
-fun <T : Any, P : Any> Single<List<T>>.mapResultApplySchedules(mapper: MapperBase<T, P>): Single<List<P>> {
-    return this.map { resource ->
-        resource.map { resourceEntity ->
-            mapper.fromEntity(resourceEntity)
-        }
-    }.applySchedulers()
-}
 private fun String?.getImageFullPath(): String? {
-    return this.takeIf { it?.isNotBlank() == true }?.let { "${BuildConfig.TMDB_IMAGE_BASE_URL}/$this" }
+    return this.takeIf { it?.isNotBlank() == true }
+        ?.let { "${BuildConfig.TMDB_IMAGE_BASE_URL}/$this" }
 }
-fun ImageView.loadImage(url: String){
+
+fun ImageView.loadImage(url: String) {
+    val requestOptions = RequestOptions()
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .centerCrop()
 
     val shimmer = Shimmer.AlphaHighlightBuilder()
-        .setDuration(1000)
-        .setBaseAlpha(0.6f)
-        .setHighlightAlpha(0.5f)
+        .setDuration(1500)
+        .setBaseAlpha(0.9f)
+        .setHighlightAlpha(0.85f)
         .setDirection(Shimmer.Direction.LEFT_TO_RIGHT)
         .setAutoStart(true)
         .build()
@@ -106,5 +106,6 @@ fun ImageView.loadImage(url: String){
 
     Glide.with(this.context).load(url.getImageFullPath())
         .placeholder(shimmerDrawable)
+        .apply(requestOptions)
         .into(this)
 }

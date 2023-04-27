@@ -1,7 +1,6 @@
 package com.hebs.moviedb.domain.repository
 
 import com.hebs.moviedb.domain.model.ResourceSection
-import com.hebs.moviedb.domain.model.VideoMedia
 import io.reactivex.rxjava3.core.Single
 
 /**
@@ -13,7 +12,7 @@ interface MovieRepository {
 
     fun getTopRatedMoviesSection(): Single<ResourceSection>
 
-    fun getMovieVideos(id: Int): Single<List<VideoMedia>>
+    fun getMovieVideos(id: Int)
 
     fun search(term: String): Single<ResourceSection>
 }

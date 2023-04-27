@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.hebs.moviedb.domain.cases.HomeMoviesUseCase
 import com.hebs.moviedb.domain.model.ResourceSection
 import com.hebs.moviedb.domain.model.actions.HomeSectionActions
+import com.hebs.moviedb.tools.applySchedulers
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -15,7 +16,7 @@ internal class HomeViewModel @Inject constructor(
     private val homeMoviesUseCase: HomeMoviesUseCase
 ) : ViewModel() {
 
-    private val sectionsResults : ArrayList<ResourceSection> = arrayListOf()
+    private var sectionsResults: Set<ResourceSection> = setOf()
 
     private val disposable = CompositeDisposable()
 
@@ -25,14 +26,19 @@ internal class HomeViewModel @Inject constructor(
     fun loadMovies() {
         disposable.add(
             homeMoviesUseCase.getData()
+                .applySchedulers()
                 .doOnSubscribe {
                     _sectionsLiveData.postValue(HomeSectionActions.Loading(true))
                 }.doOnNext {
                     _sectionsLiveData.postValue(HomeSectionActions.Loading(false))
                 }
                 .subscribe({
-                    sectionsResults+=it
-                    _sectionsLiveData.postValue(HomeSectionActions.UpdateSections(sectionsResults))
+                    sectionsResults = sectionsResults + it
+                    _sectionsLiveData.postValue(
+                        HomeSectionActions.UpdateSections(
+                            sectionsResults
+                        )
+                    )
                 },
                     {
                         _sectionsLiveData.postValue(it.message?.let { it1 ->
