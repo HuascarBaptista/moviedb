@@ -1,13 +1,17 @@
 package com.hebs.moviedb.tools
 
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.bumptech.glide.Glide
+import com.facebook.shimmer.Shimmer
+import com.facebook.shimmer.ShimmerDrawable
+import com.hebs.moviedb.BuildConfig
 import com.hebs.moviedb.data.mappers.MapperBase
-import com.hebs.moviedb.data.model.ResourceEntity
-import com.hebs.moviedb.data.model.ResourceEntityResponse
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlin.properties.ReadOnlyProperty
@@ -67,6 +71,10 @@ fun <T> Fragment.viewBinding(initialize: () -> T): ReadOnlyProperty<Fragment, T>
     }
 
 
+fun <T : Any> Flowable<T>.applySchedulers(): Flowable<T> {
+    return subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+}
 fun <T : Any> Single<T>.applySchedulers(): Single<T> {
     return subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -79,10 +87,24 @@ fun <T : Any, P : Any> Single<List<T>>.mapResultApplySchedules(mapper: MapperBas
         }
     }.applySchedulers()
 }
+private fun String?.getImageFullPath(): String? {
+    return this.takeIf { it?.isNotBlank() == true }?.let { "${BuildConfig.TMDB_IMAGE_BASE_URL}/$this" }
+}
+fun ImageView.loadImage(url: String){
 
-fun <P : Any> Single<ResourceEntityResponse>.mapResourceResultApplySchedules(mapper: MapperBase<ResourceEntity, P>): Single<List<P>> =
-    this.map {
-        it.results.map { resourceEntity ->
-            mapper.fromEntity(resourceEntity)
-        }
-    }.applySchedulers()
+    val shimmer = Shimmer.AlphaHighlightBuilder()
+        .setDuration(1000)
+        .setBaseAlpha(0.6f)
+        .setHighlightAlpha(0.5f)
+        .setDirection(Shimmer.Direction.LEFT_TO_RIGHT)
+        .setAutoStart(true)
+        .build()
+
+    val shimmerDrawable = ShimmerDrawable().apply {
+        setShimmer(shimmer)
+    }
+
+    Glide.with(this.context).load(url.getImageFullPath())
+        .placeholder(shimmerDrawable)
+        .into(this)
+}

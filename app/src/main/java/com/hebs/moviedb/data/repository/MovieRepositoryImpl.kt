@@ -1,22 +1,33 @@
 package com.hebs.moviedb.data.repository
 
+import com.hebs.moviedb.data.mappers.SectionEntityToResourceSectionMapper
 import com.hebs.moviedb.data.source.remote.MovieRemoteDataSource
 import com.hebs.moviedb.domain.repository.MovieRepository
 import javax.inject.Inject
 
-/**
- * Repository which fetches data from Remote or Local data sources
- */
 class MovieRepositoryImpl @Inject constructor(
-    private val movieRemoteDataSource: MovieRemoteDataSource
+    private val movieRemoteDataSource: MovieRemoteDataSource,
+    private val mapper: SectionEntityToResourceSectionMapper
 ) : MovieRepository {
 
-    /*
-    DO On Error
-    movieRemoteDataSource.getPopularMovies().doOnError {
-            fetchCachedPopularMovies()
-        }
-     */
-    override fun fetchPopularMovies() =
+    override fun getPopularMoviesSection() =
         movieRemoteDataSource.getPopularMovies()
+            .map {
+                mapper.fromEntity(it)
+            }
+
+    override fun getTopRatedMoviesSection() =
+        movieRemoteDataSource.getTopRatedMovies()
+            .map {
+                mapper.fromEntity(it)
+            }
+
+    override fun getMovieVideos(id: Int) = movieRemoteDataSource.getMovieVideos(id)
+
+    override fun search(term: String) =
+        movieRemoteDataSource.search(term)
+            .map {
+                mapper.fromEntity(it)
+            }
+
 }

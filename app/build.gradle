@@ -20,9 +20,18 @@ android {
         versionName "1.0"
 
         buildConfigField "String", "TMDB_BASE_URL", "\"https://api.themoviedb.org\""
+        buildConfigField "String", "TMDB_IMAGE_BASE_URL", "\"https://image.tmdb.org/t/p/original\""
         buildConfigField "String", "TMDB_API_KEY_CODE", "\"cc6e751764a8263bedc959df0534d07d\""
-    }
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation":"$projectDir/schemas".toString(),
+                        "room.incremental":"true"
+                ]
+            }
+        }
+    }
     buildFeatures {
         viewBinding true
     }
@@ -60,6 +69,10 @@ dependencies {
     implementation presentationDependencies.navigationUI
     implementation presentationDependencies.recyclerView
     implementation presentationDependencies.cardView
+    implementation presentationDependencies.groupie
+    implementation presentationDependencies.groupieViewBinding
+    implementation presentationDependencies.shimmer
+    implementation presentationDependencies.glide
 
     // Tests
     testImplementation testDependencies.junit
@@ -74,6 +87,11 @@ dependencies {
     implementation appDependencies.rxJava
     implementation appDependencies.rxAndroid
     implementation appDependencies.rxAdapter
+
+    implementation dataDependencies.room
+    kapt dataDependencies.roomCompiler
+    implementation dataDependencies.roomExtensions
+    implementation dataDependencies.roomRx
 }
 
 kapt {

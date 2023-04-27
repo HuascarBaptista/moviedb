@@ -10,4 +10,9 @@
     <string name="empty_search">Lo sentimos\n Sin resultados</string>
     <string name="subtitle_overview">Descripcion general</string>
     <string name="title_media">Trailers</string>
+    <string name="section_title_top_rated_movies">Top Peliculas rankeadas</string>
+    <string name="section_title_top_rated_tv_shows">Top Series rankeadas</string>
+    <string name="section_title_popular_movies">Rating Peliculas populares</string>
+    <string name="section_title_popular_tv_shows">Rating Series populares</string>
+    <string name="section_title_search">Busca tu serie o pelicula</string>
 </resources>

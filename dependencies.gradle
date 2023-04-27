@@ -3,6 +3,7 @@ allprojects {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { url "https://jitpack.io" }
     }
 }
 
@@ -24,6 +25,9 @@ ext {
     navigationVersion = '2.5.3'
     recyclerViewVersion = '1.2.1'
     cardViewVersion = '1.0.0'
+    groupieVersion = '2.10.1'
+    shimmerVersion = '0.5.0'
+    glideVersion = '4.15.1'
 
     // Network
     retrofitVersion = '2.9.0'
@@ -34,6 +38,9 @@ ext {
     espressoVersion = '3.4.0'
     testExtVersion = '1.1.3'
     globalTest = '2.44'
+
+    // Data
+    roomVersion = "2.4.0"
 
     // App
     appDependencies = [
@@ -54,7 +61,11 @@ ext {
             navigationFragment: "androidx.navigation:navigation-fragment-ktx:${navigationVersion}",
             navigationUI      : "androidx.navigation:navigation-ui-ktx:${navigationVersion}",
             recyclerView      : "androidx.recyclerview:recyclerview:${recyclerViewVersion}",
-            cardView          : "androidx.cardview:cardview:${cardViewVersion}"
+            cardView          : "androidx.cardview:cardview:${cardViewVersion}",
+            groupie           : "com.github.lisawray.groupie:groupie:${groupieVersion}",
+            groupieViewBinding: "com.github.lisawray.groupie:groupie-viewbinding:${groupieVersion}",
+            shimmer: "com.facebook.shimmer:shimmer:${shimmerVersion}",
+            glide: "com.github.bumptech.glide:glide:${glideVersion}"
     ]
 
     networkDependencies = [
@@ -68,5 +79,12 @@ ext {
             junit   : "junit:junit:${jUnitVersion}",
             espresso: "androidx.test.espresso:espresso-core:${espressoVersion}",
             extJunit: "androidx.test.ext:junit:${testExtVersion}",
+    ]
+
+    dataDependencies = [
+            room          : "androidx.room:room-runtime:${roomVersion}",
+            roomCompiler  : "androidx.room:room-compiler:${roomVersion}",
+            roomExtensions: "androidx.room:room-ktx:${roomVersion}",
+            roomRx: "androidx.room:room-rxjava3:${roomVersion}"
     ]
 }

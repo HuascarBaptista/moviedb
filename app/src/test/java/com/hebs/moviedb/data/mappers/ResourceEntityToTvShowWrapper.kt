@@ -1,7 +1,7 @@
 package com.hebs.moviedb.data.mappers
 
 import com.hebs.moviedb.data.model.ResourceEntity
-import com.hebs.moviedb.domain.model.TVShow
+import com.hebs.moviedb.domain.model.TvShow
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
@@ -17,7 +17,7 @@ class ResourceEntityTvShowWrapperTest {
             posterImageURL = "/posterImageUrl.jpg",
             coverImageURL = "/coverImageUrl.jpg"
         )
-        val result: TVShow = ResourceEntityToTvShowMapper().fromEntity(entity)
+        val result: TvShow = ResourceEntityToTvShowMapper().fromEntity(entity)
         assertEquals(entity.id, result.id)
         assertEquals(entity.title, result.title)
         assertEquals(entity.overview, result.overview)

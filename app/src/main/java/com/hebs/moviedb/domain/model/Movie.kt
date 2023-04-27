@@ -4,7 +4,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Movie(
-    override val id: Int,
+    override val id: Int? = null,
     override val title: String?,
     override val overview: String?,
     override val rating: Double,
