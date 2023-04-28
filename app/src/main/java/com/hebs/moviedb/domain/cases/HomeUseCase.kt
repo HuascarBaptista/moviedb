@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
-class HomeMoviesUseCase @Inject constructor(
+class HomeUseCase @Inject constructor(
     private val moviesRepository: MovieRepository,
     private val tvShowRepository: TvShowRepository
 ) {

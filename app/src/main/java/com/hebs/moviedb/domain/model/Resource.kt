@@ -2,7 +2,7 @@ package com.hebs.moviedb.domain.model
 
 import android.os.Parcelable
 
-interface Resource: Parcelable {
+interface Resource : Parcelable {
     val id: Int
     val title: String
     val overview: String?
@@ -10,4 +10,5 @@ interface Resource: Parcelable {
     val score: Double
     val posterImageUrl: String?
     val coverImageUrl: String?
+    val isMovie: Boolean
 }

@@ -15,6 +15,6 @@
     <string name="section_title_top_rated_tv_shows">Top Series rankeadas</string>
     <string name="section_title_popular_movies">Rating Peliculas populares</string>
     <string name="section_title_popular_tv_shows">Rating Series populares</string>
-    <string name="section_title_search_movies">Busqueda de peliculas</string>
-    <string name="section_title_search_tv_shows">Busqueda de series</string>
+    <string name="section_title_search">Busqueda de peliculas y series: %1$s</string>
+    <string name="search_hint">Qué deseas buscar?</string>
 </resources>

@@ -3,7 +3,6 @@ package com.hebs.moviedb.data.mappers
 import com.hebs.moviedb.data.model.local.ResourceEntity
 import com.hebs.moviedb.data.model.local.ResourceEntityType
 import com.hebs.moviedb.domain.model.ResourceSection
-import com.hebs.moviedb.domain.model.SectionType
 import javax.inject.Inject
 
 class SectionToResourcesEntityMapper @Inject constructor() {
@@ -17,11 +16,11 @@ class SectionToResourcesEntityMapper @Inject constructor() {
                 rating = it.rating,
                 posterImageUrl = it.posterImageUrl,
                 coverImageUrl = it.coverImageUrl,
-                type = getResourceType(resourceSection.categoryType)
+                type = getResourceType(it.isMovie)
             )
         }
     }
 
-    private fun getResourceType(type: SectionType) =
-        if (type.isMovieType()) ResourceEntityType.MOVIE else ResourceEntityType.TV_SHOW
+    private fun getResourceType(isMovie: Boolean) =
+        if (isMovie) ResourceEntityType.MOVIE else ResourceEntityType.TV_SHOW
 }

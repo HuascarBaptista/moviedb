@@ -11,5 +11,6 @@ data class TvShow(
     override val rating: Double,
     override val score: Double,
     override val posterImageUrl: String?,
-    override val coverImageUrl: String?
+    override val coverImageUrl: String?,
+    override val isMovie: Boolean = false
 ) : Resource, Parcelable

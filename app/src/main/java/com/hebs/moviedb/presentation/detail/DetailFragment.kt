@@ -52,9 +52,7 @@ class DetailFragment : Fragment(), DetailVideoMediaItem.VideoMediaListener {
     private fun initRecyclerView() {
         binding.recyclerViewMedia.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            setHasFixedSize(true)
             adapter = groupieAdapter
-            isNestedScrollingEnabled = true
         }
     }
 

@@ -2,6 +2,7 @@ package com.hebs.moviedb.domain.repository
 
 import com.hebs.moviedb.domain.model.ResourceSection
 import com.hebs.moviedb.domain.model.VideoMedia
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
 /**
@@ -14,5 +15,5 @@ interface TvShowRepository {
 
     fun getVideoMedia(resourceId: Int): Single<List<VideoMedia>>
 
-    fun search(term: String): Single<ResourceSection>
+    fun search(query: String): Observable<ResourceSection>
 }

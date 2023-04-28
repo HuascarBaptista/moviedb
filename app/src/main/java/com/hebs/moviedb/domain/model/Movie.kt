@@ -11,5 +11,6 @@ data class Movie(
     override val rating: Double,
     override val score: Double,
     override val posterImageUrl: String?,
-    override val coverImageUrl: String?
+    override val coverImageUrl: String?,
+    override var isMovie: Boolean = true
 ) : Resource, Parcelable

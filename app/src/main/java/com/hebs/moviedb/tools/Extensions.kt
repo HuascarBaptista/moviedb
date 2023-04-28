@@ -17,6 +17,7 @@ import com.facebook.shimmer.ShimmerDrawable
 import com.hebs.moviedb.BuildConfig
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlin.properties.ReadOnlyProperty
@@ -81,12 +82,21 @@ fun <T : Any> Single<T>.applySchedulers(): Single<T> {
         .observeOn(AndroidSchedulers.mainThread())
 }
 
+fun <T : Any> Observable<T>.applySchedulers(): Observable<T> {
+    return subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+}
 fun <T : Any> Flowable<T>.applySchedulers(): Flowable<T> {
     return subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 }
 
 fun <T : Any> Single<T>.applyIoSchedulers(): Single<T> {
+    return subscribeOn(Schedulers.io())
+        .observeOn(Schedulers.io())
+}
+
+fun <T : Any> Observable<T>.applyIoSchedulers(): Observable<T> {
     return subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io())
 }

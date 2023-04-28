@@ -2,6 +2,7 @@ package com.hebs.moviedb.data.remote.service
 
 import com.hebs.moviedb.data.model.api.ResultVideoApiResponse
 import com.hebs.moviedb.data.model.api.ResultsApiResponse
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -22,6 +23,6 @@ interface MovieService {
     fun getMovieMedia(@Path("movie_id") id: Int): Single<ResultVideoApiResponse>
 
     @GET("/3/search/movie")
-    fun search(@Query("query") term: String): Single<ResultsApiResponse>
+    fun search(@Query("query") term: String): Observable<ResultsApiResponse>
 
 }

@@ -1,28 +1,40 @@
 package com.hebs.moviedb.presentation.home.items
 
+import android.util.Log
 import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
 import com.hebs.moviedb.R
-import com.hebs.moviedb.databinding.ItemHomeSectionBinding
+import com.hebs.moviedb.databinding.ItemCarouselSectionResourcesBinding
 import com.hebs.moviedb.domain.model.Resource
 import com.hebs.moviedb.domain.model.ResourceSection
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.viewbinding.BindableItem
 
-class SectionHomeItem(
+class CarouselResourceItem(
     private val resourceSection: ResourceSection,
-    private val resourceSelectedListener: ResourceSelectedListener
-) : BindableItem<ItemHomeSectionBinding>() {
+    private val resourceSelectedListener: ResourceSelectedListener,
+    private val shouldShowResourcesInGrid: Boolean = false
+) : BindableItem<ItemCarouselSectionResourcesBinding>() {
 
     private val groupieAdapter = GroupieAdapter()
 
-    override fun getLayout() = R.layout.item_home_section
+    override fun getLayout() = R.layout.item_carousel_section_resources
 
     override fun initializeViewBinding(view: View) =
-        ItemHomeSectionBinding.bind(view)
+        ItemCarouselSectionResourcesBinding.bind(view)
 
-    override fun bind(viewBinding: ItemHomeSectionBinding, position: Int) {
+    override fun bind(viewBinding: ItemCarouselSectionResourcesBinding, position: Int) {
+        initRecycler(viewBinding)
+        Log.e("hebshebs", " New bind " + resourceSection.categoryName)
         viewBinding.textViewSectionTitle.text = resourceSection.categoryName
         groupieAdapter.update(mapResourcesItems(resourceSection.resources))
+    }
+
+    private fun initRecycler(viewBinding: ItemCarouselSectionResourcesBinding) {
+        if (shouldShowResourcesInGrid) {
+            viewBinding.recyclerViewSectionVideos.layoutManager =
+                GridLayoutManager(viewBinding.root.context, 2)
+        }
         viewBinding.recyclerViewSectionVideos.adapter = groupieAdapter
     }
 

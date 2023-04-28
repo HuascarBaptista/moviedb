@@ -9,7 +9,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 
 class SectionVideoItem(
     private val resource: Resource,
-    private val sectionSelectedListener: SectionHomeItem.ResourceSelectedListener
+    private val sectionSelectedListener: CarouselResourceItem.ResourceSelectedListener
 ) : BindableItem<ItemSectionVideoBinding>() {
 
     override fun getLayout() = R.layout.item_section_video

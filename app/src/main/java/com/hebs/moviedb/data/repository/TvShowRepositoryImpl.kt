@@ -1,6 +1,7 @@
 package com.hebs.moviedb.data.repository
 
 import android.content.Context
+import android.util.Log
 import com.hebs.moviedb.R
 import com.hebs.moviedb.data.mappers.ApiResponseToSectionMapper
 import com.hebs.moviedb.data.mappers.ApiResponseToVideoMediaMapper
@@ -21,9 +22,9 @@ import com.hebs.moviedb.domain.model.VideoMedia
 import com.hebs.moviedb.domain.repository.TvShowRepository
 import com.hebs.moviedb.tools.applyIoSchedulers
 import dagger.hilt.android.qualifiers.ApplicationContext
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
-import kotlin.reflect.KFunction0
 
 class TvShowRepositoryImpl @Inject constructor(
     private val tvShowRemoteDataSource: TvShowRemoteDataSource,
@@ -54,7 +55,7 @@ class TvShowRepositoryImpl @Inject constructor(
     private fun getTvShowSection(
         categoryType: SectionType,
         categoryName: String,
-        remoteDataSourceCall: KFunction0<Single<ResultsApiResponse>>
+        remoteDataSourceCall: () -> Single<ResultsApiResponse>
     ): Single<ResourceSection> {
 
         return remoteDataSourceCall().applyIoSchedulers().map {
@@ -64,7 +65,7 @@ class TvShowRepositoryImpl @Inject constructor(
                 categoryType = categoryType,
             )
         }.map { section ->
-            storeData(section)
+            storeSectionData(section)
             section
         }.onErrorResumeNext {
             retrieveLocalData(categoryType)
@@ -86,7 +87,7 @@ class TvShowRepositoryImpl @Inject constructor(
         return sectionResourcesEntityToSectionMapper.map(sectionEntity, resources)
     }
 
-    private fun storeData(section: ResourceSection) {
+    private fun storeSectionData(section: ResourceSection) {
         val sectionEntity = sectionToSectionEntityMapper.map(section)
         val resourcesEntity = sectionToResourceEntityMapper.map(section)
         localDataSource.insertAll(resourcesEntity, sectionEntity)
@@ -133,11 +134,23 @@ class TvShowRepositoryImpl @Inject constructor(
                 }
             }
 
-
-    override fun search(term: String) = getTvShowSection(
-        SectionType.SEARCH_TV_SHOWS,
-        context.getString(R.string.section_title_search_tv_shows),
-        tvShowRemoteDataSource::getTopRatedTvShows
-    )
+    override fun search(query: String): Observable<ResourceSection> {
+        val categoryType = SectionType.SEARCH
+        val categoryName = context.getString(R.string.section_title_search, query)
+        return tvShowRemoteDataSource.search(query).map {
+            apiResponseToSectionMapper.map(
+                resources = it,
+                categoryName = categoryName,
+                categoryType = categoryType,
+            )
+        }.applyIoSchedulers()
+            .map { section ->
+                storeSectionData(section)
+                section
+            }.onErrorResumeNext {
+                Log.e("hebshebs", " onErrorResumeNext $categoryName")
+                retrieveLocalData(categoryType).toObservable()
+            }
+    }
 
 }

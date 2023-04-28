@@ -13,7 +13,7 @@
         android:layout_marginHorizontal="@dimen/horizontal_margin"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_home_section" />
+        tools:listitem="@layout/item_carousel_section_resources" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textView_default_offline_message"

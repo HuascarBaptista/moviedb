@@ -19,4 +19,6 @@ data class ResourceEntity(
 enum class ResourceEntityType {
     MOVIE,
     TV_SHOW;
+
+    fun isMovieType() = this == MOVIE
 }

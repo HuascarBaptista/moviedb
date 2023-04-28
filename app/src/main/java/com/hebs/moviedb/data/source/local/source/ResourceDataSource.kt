@@ -44,5 +44,4 @@ interface ResourceDataSource {
             insertSectionWithResource(SectionResourceCrossEntity(sectionEntity.categoryName, it.id))
         }
     }
-
 }

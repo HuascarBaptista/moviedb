@@ -3,7 +3,6 @@ package com.hebs.moviedb.data.mappers
 import com.hebs.moviedb.data.model.local.ResourceEntity
 import com.hebs.moviedb.data.model.local.SectionEntity
 import com.hebs.moviedb.domain.model.Movie
-import com.hebs.moviedb.domain.model.Resource
 import com.hebs.moviedb.domain.model.ResourceSection
 import com.hebs.moviedb.domain.model.TvShow
 import javax.inject.Inject
@@ -12,10 +11,12 @@ class SectionResourcesEntityToSectionMapper @Inject constructor(private val cate
     fun map(sectionEntity: SectionEntity, resourcesEntity: List<ResourceEntity>): ResourceSection {
         val categoryType = categoryTypeMapper.mapFromEntity(sectionEntity.categoryType)
 
-        val resources = if (categoryType.isMovieType()) {
-            getMovieResources(resourcesEntity)
-        } else {
-            getTvShowResources(resourcesEntity)
+        val resources = resourcesEntity.map {
+            if (it.type.isMovieType()) {
+                getMovieResource(it)
+            } else {
+                getTvShowResource(it)
+            }
         }
         return ResourceSection(
             categoryName = sectionEntity.categoryName,
@@ -24,31 +25,25 @@ class SectionResourcesEntityToSectionMapper @Inject constructor(private val cate
         )
     }
 
-    private fun getMovieResources(resources: List<ResourceEntity>): List<Resource> {
-        return resources.map {
-            Movie(
-                id = it.id,
-                title = it.title,
-                overview = it.overview,
-                score = it.score,
-                rating = it.rating,
-                posterImageUrl = it.posterImageUrl,
-                coverImageUrl = it.coverImageUrl
-            )
-        }
-    }
+    private fun getMovieResource(resource: ResourceEntity) =
+        Movie(
+            id = resource.id,
+            title = resource.title,
+            overview = resource.overview,
+            score = resource.score,
+            rating = resource.rating,
+            posterImageUrl = resource.posterImageUrl,
+            coverImageUrl = resource.coverImageUrl
+        )
 
-    private fun getTvShowResources(resources: List<ResourceEntity>): List<Resource> {
-        return resources.map {
-            TvShow(
-                id = it.id,
-                title = it.title,
-                overview = it.overview,
-                score = it.score,
-                rating = it.rating,
-                posterImageUrl = it.posterImageUrl,
-                coverImageUrl = it.coverImageUrl
-            )
-        }
-    }
+    private fun getTvShowResource(resource: ResourceEntity) =
+        TvShow(
+            id = resource.id,
+            title = resource.title,
+            overview = resource.overview,
+            score = resource.score,
+            rating = resource.rating,
+            posterImageUrl = resource.posterImageUrl,
+            coverImageUrl = resource.coverImageUrl
+        )
 }
