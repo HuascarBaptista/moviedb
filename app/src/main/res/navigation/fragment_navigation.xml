@@ -26,4 +26,20 @@
             android:name="resource"
             app:argType="com.hebs.moviedb.domain.model.Resource" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_genres_fragment"
+        android:name="com.hebs.moviedb.presentation.genres.SelectGenreFragment"
+        android:label="@string/title_genres"
+        tools:layout="@layout/fragment_select_genre" />
+
+    <fragment
+        android:id="@+id/navigation_by_genre_fragment"
+        android:name="com.hebs.moviedb.presentation.genres.SearchByGenreFragment"
+        android:label="@string/title_genres"
+        tools:layout="@layout/fragment_search_by_genre">
+        <argument
+            android:name="genre"
+            app:argType="com.hebs.moviedb.domain.model.Genre" />
+    </fragment>
 </navigation>

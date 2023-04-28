@@ -13,11 +13,11 @@ data class ResourceSection(
 }
 
 enum class SectionType {
-    POPULAR_MOVIES, POPULAR_TV_SHOWS, TOP_RATED_MOVIES, TOP_RATED_TV_SHOWS, SEARCH;
+    POPULAR_MOVIES, POPULAR_TV_SHOWS, TOP_RATED_MOVIES, TOP_RATED_TV_SHOWS, SEARCH, BY_GENRE_MOVIES, BY_GENRE_TV_SHOWS;
 
     fun isMovieType(): Boolean {
         return when (this) {
-            POPULAR_MOVIES, TOP_RATED_MOVIES -> true
+            POPULAR_MOVIES, TOP_RATED_MOVIES, BY_GENRE_MOVIES -> true
             else -> false
         }
     }

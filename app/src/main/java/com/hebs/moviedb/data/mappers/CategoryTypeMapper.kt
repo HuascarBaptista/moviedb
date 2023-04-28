@@ -13,6 +13,8 @@ class CategoryTypeMapper @Inject constructor() {
             SectionType.TOP_RATED_MOVIES -> SectionEntityType.TOP_RATED_MOVIES
             SectionType.TOP_RATED_TV_SHOWS -> SectionEntityType.TOP_RATED_TV_SHOWS
             SectionType.SEARCH -> SectionEntityType.SEARCH
+            SectionType.BY_GENRE_MOVIES -> SectionEntityType.BY_GENRE_MOVIES
+            SectionType.BY_GENRE_TV_SHOWS -> SectionEntityType.BY_GENRE_TV_SHOWS
         }
     }
 
@@ -23,5 +25,7 @@ class CategoryTypeMapper @Inject constructor() {
             SectionEntityType.TOP_RATED_MOVIES -> SectionType.TOP_RATED_MOVIES
             SectionEntityType.TOP_RATED_TV_SHOWS -> SectionType.TOP_RATED_TV_SHOWS
             SectionEntityType.SEARCH -> SectionType.SEARCH
+            SectionEntityType.BY_GENRE_MOVIES -> SectionType.BY_GENRE_MOVIES
+            SectionEntityType.BY_GENRE_TV_SHOWS -> SectionType.BY_GENRE_TV_SHOWS
         }
 }

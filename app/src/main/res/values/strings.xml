@@ -17,4 +17,6 @@
     <string name="section_title_popular_tv_shows">Rating Series populares</string>
     <string name="section_title_search">Busqueda de peliculas y series: %1$s</string>
     <string name="search_hint">Qué deseas buscar?</string>
+    <string name="section_title_by_genre_movies">Peliculas de genero %1$s</string>
+    <string name="section_title_by_genre_tv_shows">Series de genero %1$s</string>
 </resources>

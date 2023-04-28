@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import com.hebs.moviedb.data.model.local.GenreEntity
 import com.hebs.moviedb.data.model.local.ResourceEntity
 import com.hebs.moviedb.data.model.local.SectionEntity
 import com.hebs.moviedb.data.model.local.SectionEntityType
@@ -18,6 +19,10 @@ interface ResourceDataSource {
     @Transaction
     @Query("SELECT * FROM section WHERE categoryType = :categoryType")
     fun getSectionBySectionType(categoryType: SectionEntityType): Single<SectionWithResources>
+
+    @Transaction
+    @Query("SELECT * FROM section WHERE categoryName = :categoryName")
+    fun getSectionByCategoryName(categoryName: String): Single<SectionWithResources>
 
     @Transaction
     @Query("SELECT * FROM video WHERE resourceId = :resourceId")
@@ -44,4 +49,11 @@ interface ResourceDataSource {
             insertSectionWithResource(SectionResourceCrossEntity(sectionEntity.categoryName, it.id))
         }
     }
+
+    @Transaction
+    @Query("SELECT * FROM genre ORDER BY name asc")
+    fun getGenreList(): Single<List<GenreEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertGenreList(genreEntity: List<GenreEntity>)
 }

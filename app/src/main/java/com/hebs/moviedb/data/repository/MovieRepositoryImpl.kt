@@ -3,9 +3,12 @@ package com.hebs.moviedb.data.repository
 import android.content.Context
 import android.util.Log
 import com.hebs.moviedb.R
+import com.hebs.moviedb.data.mappers.ApiResponseToGenreMapper
 import com.hebs.moviedb.data.mappers.ApiResponseToSectionMapper
 import com.hebs.moviedb.data.mappers.ApiResponseToVideoMediaMapper
 import com.hebs.moviedb.data.mappers.CategoryTypeMapper
+import com.hebs.moviedb.data.mappers.GenreEntityToGenreMapper
+import com.hebs.moviedb.data.mappers.GenreToGenreEntityMapper
 import com.hebs.moviedb.data.mappers.SectionResourcesEntityToSectionMapper
 import com.hebs.moviedb.data.mappers.SectionToResourcesEntityMapper
 import com.hebs.moviedb.data.mappers.SectionToSectionEntityMapper
@@ -16,6 +19,7 @@ import com.hebs.moviedb.data.model.local.SectionEntityType
 import com.hebs.moviedb.data.model.local.SectionWithResources
 import com.hebs.moviedb.data.source.local.source.ResourceDataSource
 import com.hebs.moviedb.data.source.remote.MovieRemoteDataSource
+import com.hebs.moviedb.domain.model.Genre
 import com.hebs.moviedb.domain.model.ResourceSection
 import com.hebs.moviedb.domain.model.SectionType
 import com.hebs.moviedb.domain.model.VideoMedia
@@ -37,6 +41,9 @@ class MovieRepositoryImpl @Inject constructor(
     private val apiResponseToVideoMediaMapper: ApiResponseToVideoMediaMapper,
     private val videoMediaEntityToVideoMediaMapper: VideoMediaEntityToVideoMediaMapper,
     private val videoMediaToVideoMediaEntityMapper: VideoMediaToVideoMediaEntityMapper,
+    private val apiResponseToGenreMapper: ApiResponseToGenreMapper,
+    private val genreToGenreEntityMapper: GenreToGenreEntityMapper,
+    private val genreEntityToGenreMapper: GenreEntityToGenreMapper,
     @ApplicationContext private val context: Context
 ) : MovieRepository {
 
@@ -157,7 +164,7 @@ class MovieRepositoryImpl @Inject constructor(
                 section
             }.onErrorResumeNext {
                 Log.e("hebshebs", " onErrorResumeNext $categoryName")
-                getLocalResourceSectionBySectionType(categoryType).toObservable()
+                retrieveLocalDataByCategoryName(categoryName).toObservable()
             }
     }
 
@@ -166,4 +173,63 @@ class MovieRepositoryImpl @Inject constructor(
         val resourcesEntity = sectionToResourceEntityMapper.map(resourceSection)
         localDataSource.insertAll(resourcesEntity, sectionEntity)
     }
+
+
+    override fun getGenreList(): Single<List<Genre>> {
+        return movieRemoteDataSource.getGenreList().applyIoSchedulers()
+            .map { genreList ->
+                genreList.results.map {
+                    apiResponseToGenreMapper.map(it)
+                }
+            }.map { genreList ->
+                storeGenreList(genreList)
+                genreList
+            }.onErrorResumeNext {
+                getLocalGenreList()
+            }
+    }
+
+    override fun storeGenreList(genreList: List<Genre>) {
+        val genreEntityList = genreList.map { genreToGenreEntityMapper.map(it) }
+        localDataSource.insertGenreList(genreEntityList)
+    }
+
+    private fun getLocalGenreList(): Single<List<Genre>> =
+        localDataSource
+            .getGenreList()
+            .applyIoSchedulers()
+            .map { genreList ->
+                genreList.map {
+                    genreEntityToGenreMapper.map(it)
+                }
+            }
+
+
+    override fun getByGenre(genre: Genre): Single<ResourceSection> {
+        val categoryType = SectionType.BY_GENRE_MOVIES
+        val categoryName = context.getString(R.string.section_title_by_genre_movies, genre.name)
+
+        return movieRemoteDataSource.getByGenre(genre.id).applyIoSchedulers()
+            .map { byGenreList ->
+
+                apiResponseToSectionMapper.map(
+                    resources = byGenreList,
+                    categoryName = categoryName,
+                    categoryType = categoryType,
+                )
+            }.map { section ->
+                storeSectionData(section)
+                section
+            }.onErrorResumeNext {
+                retrieveLocalDataByCategoryName(categoryName)
+            }
+    }
+
+    private fun retrieveLocalDataByCategoryName(categoryName: String) =
+        localDataSource.getSectionByCategoryName(categoryName)
+            .applyIoSchedulers()
+            .map { sectionWithResources ->
+                mapToResourceSection(sectionWithResources)
+            }
+
 }

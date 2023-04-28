@@ -1,9 +1,12 @@
 package com.hebs.moviedb.domain.di
 
 import android.content.Context
+import com.hebs.moviedb.data.mappers.ApiResponseToGenreMapper
 import com.hebs.moviedb.data.mappers.ApiResponseToSectionMapper
 import com.hebs.moviedb.data.mappers.ApiResponseToVideoMediaMapper
 import com.hebs.moviedb.data.mappers.CategoryTypeMapper
+import com.hebs.moviedb.data.mappers.GenreEntityToGenreMapper
+import com.hebs.moviedb.data.mappers.GenreToGenreEntityMapper
 import com.hebs.moviedb.data.mappers.SectionResourcesEntityToSectionMapper
 import com.hebs.moviedb.data.mappers.SectionToResourcesEntityMapper
 import com.hebs.moviedb.data.mappers.SectionToSectionEntityMapper
@@ -59,6 +62,9 @@ internal object ResourceModule {
         apiResponseToVideoMediaMapper: ApiResponseToVideoMediaMapper,
         videoMediaEntityToVideoMediaMapper: VideoMediaEntityToVideoMediaMapper,
         videoMediaToVideoMediaEntityMapper: VideoMediaToVideoMediaEntityMapper,
+        apiResponseToGenreMapper: ApiResponseToGenreMapper,
+        genreToGenreEntityMapper: GenreToGenreEntityMapper,
+        genreEntityToGenreMapper: GenreEntityToGenreMapper,
         @ApplicationContext context: Context
     ): MovieRepository {
         return MovieRepositoryImpl(
@@ -72,6 +78,9 @@ internal object ResourceModule {
             apiResponseToVideoMediaMapper,
             videoMediaEntityToVideoMediaMapper,
             videoMediaToVideoMediaEntityMapper,
+            apiResponseToGenreMapper,
+            genreToGenreEntityMapper,
+            genreEntityToGenreMapper,
             context
         )
     }
@@ -88,6 +97,9 @@ internal object ResourceModule {
         apiResponseToVideoMediaMapper: ApiResponseToVideoMediaMapper,
         videoMediaEntityToVideoMediaMapper: VideoMediaEntityToVideoMediaMapper,
         videoMediaToVideoMediaEntityMapper: VideoMediaToVideoMediaEntityMapper,
+        apiResponseToGenreMapper: ApiResponseToGenreMapper,
+        genreToGenreEntityMapper: GenreToGenreEntityMapper,
+        genreEntityToGenreMapper: GenreEntityToGenreMapper,
         @ApplicationContext context: Context
     ): TvShowRepository {
         return TvShowRepositoryImpl(
@@ -101,6 +113,9 @@ internal object ResourceModule {
             apiResponseToVideoMediaMapper,
             videoMediaEntityToVideoMediaMapper,
             videoMediaToVideoMediaEntityMapper,
+            apiResponseToGenreMapper,
+            genreToGenreEntityMapper,
+            genreEntityToGenreMapper,
             context
         )
     }

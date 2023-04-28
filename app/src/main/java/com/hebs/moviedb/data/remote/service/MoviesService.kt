@@ -1,5 +1,6 @@
 package com.hebs.moviedb.data.remote.service
 
+import com.hebs.moviedb.data.model.api.GenresListApiResponse
 import com.hebs.moviedb.data.model.api.ResultVideoApiResponse
 import com.hebs.moviedb.data.model.api.ResultsApiResponse
 import io.reactivex.rxjava3.core.Observable
@@ -24,5 +25,11 @@ interface MovieService {
 
     @GET("/3/search/movie")
     fun search(@Query("query") term: String): Observable<ResultsApiResponse>
+
+    @GET("/3/genre/movie/list")
+    fun getGenreList(): Single<GenresListApiResponse>
+
+    @GET("/3/discover/movie")
+    fun getTvShowByGenre(@Query("with_genres") id: Int): Single<ResultsApiResponse>
 
 }

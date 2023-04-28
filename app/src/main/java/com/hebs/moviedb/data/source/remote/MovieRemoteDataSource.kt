@@ -1,5 +1,6 @@
 package com.hebs.moviedb.data.source.remote
 
+import com.hebs.moviedb.data.model.api.GenresListApiResponse
 import com.hebs.moviedb.data.model.api.ResultVideoApiResponse
 import com.hebs.moviedb.data.model.api.ResultsApiResponse
 import com.hebs.moviedb.data.remote.service.MovieService
@@ -22,5 +23,11 @@ open class MovieRemoteDataSource @Inject constructor(
 
     fun search(query: String): Observable<ResultsApiResponse> =
         movieService.search(query)
+
+    fun getGenreList(): Single<GenresListApiResponse> =
+        movieService.getGenreList()
+
+    fun getByGenre(genreId: Int): Single<ResultsApiResponse> =
+        movieService.getTvShowByGenre(genreId)
 }
 
