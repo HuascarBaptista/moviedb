@@ -1,6 +1,5 @@
 package com.hebs.moviedb.presentation.home.items
 
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hebs.moviedb.R
@@ -25,8 +24,7 @@ class CarouselResourceItem(
 
     override fun bind(viewBinding: ItemCarouselSectionResourcesBinding, position: Int) {
         initRecycler(viewBinding)
-        Log.e("hebshebs", " New bind " + resourceSection.categoryName)
-        viewBinding.textViewSectionTitle.text = resourceSection.categoryName
+                viewBinding.textViewSectionTitle.text = resourceSection.categoryName
         groupieAdapter.update(mapResourcesItems(resourceSection.resources))
     }
 

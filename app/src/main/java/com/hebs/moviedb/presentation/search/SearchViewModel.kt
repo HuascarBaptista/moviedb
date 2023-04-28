@@ -1,6 +1,5 @@
 package com.hebs.moviedb.presentation.search
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -35,7 +34,6 @@ internal class SearchViewModel @Inject constructor(
                 .applySchedulers()
                 .subscribe({
                     searchResults = searchResults + it
-                    Log.e("hebshebs", " Nuevo resultado search " + searchResults.size)
                     _searchLiveData.postValue(
                         SearchSectionActions.UpdateSearch(
                             searchResults

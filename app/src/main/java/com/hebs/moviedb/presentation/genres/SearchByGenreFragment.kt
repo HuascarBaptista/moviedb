@@ -2,7 +2,6 @@ package com.hebs.moviedb.presentation.genres
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,13 +62,12 @@ class SearchByGenreFragment : Fragment(), CarouselResourceItem.ResourceSelectedL
 
     private fun initViewModel() {
         viewModel.genresLiveData.observe(viewLifecycleOwner) {
-            Log.e("hebshebs", " Nuevo Evento $it")
-            when (it) {
-                is GenreSectionActions.HideLoading -> binding.progressBarLoading.hide()
-                is GenreSectionActions.UpdateSections -> updateSections(it.sections)
-                is GenreSectionActions.Error -> showError(it.message)
-                else -> {}
-            }
+                        when (it) {
+                            is GenreSectionActions.HideLoading -> binding.progressBarLoading.hide()
+                            is GenreSectionActions.UpdateSections -> updateSections(it.sections)
+                            is GenreSectionActions.Error -> showError(it.message)
+                            else -> {}
+                        }
         }
         viewModel.getByGenre(genre)
     }
@@ -82,14 +80,11 @@ class SearchByGenreFragment : Fragment(), CarouselResourceItem.ResourceSelectedL
 
     private fun updateSections(sections: Set<ResourceSection>) {
         val sectionsItems = sections.map {
-            Log.e("hebshebs", " Nuevo Item " + it.categoryName)
-            Log.e("hebshebs", " Tama;o recursos " + it.resources.size)
             CarouselResourceItem(
                 it,
                 this
             )
         }
-        Log.e("hebshebs", " Agregar $sectionsItems")
         groupieAdapter.update(sectionsItems)
     }
 

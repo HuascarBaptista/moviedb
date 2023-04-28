@@ -2,7 +2,6 @@ package com.hebs.moviedb.presentation.genres
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,13 +57,12 @@ class SelectGenreFragment : Fragment(), GenreTitleItem.GenreSelectedListener {
 
     private fun initViewModel() {
         viewModel.genresLiveData.observe(viewLifecycleOwner) {
-            Log.e("hebshebs", " Nuevo Evento $it")
-            when (it) {
-                is GenreSectionActions.HideLoading -> binding.progressBarLoading.hide()
-                is GenreSectionActions.UpdateGenres -> updateGenres(it.genres)
-                is GenreSectionActions.Error -> showError(it.message)
-                else -> {}
-            }
+                        when (it) {
+                            is GenreSectionActions.HideLoading -> binding.progressBarLoading.hide()
+                            is GenreSectionActions.UpdateGenres -> updateGenres(it.genres)
+                            is GenreSectionActions.Error -> showError(it.message)
+                            else -> {}
+                        }
         }
         viewModel.getGenres()
     }

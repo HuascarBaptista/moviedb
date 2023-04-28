@@ -40,4 +40,11 @@ enum class SectionEntityType {
         }
     }
 
+    fun isGenreType(): Boolean {
+        return when (this) {
+            BY_GENRE_MOVIES, BY_GENRE_TV_SHOWS -> true
+            else -> false
+        }
+    }
+
 }

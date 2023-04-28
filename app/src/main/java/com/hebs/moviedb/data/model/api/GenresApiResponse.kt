@@ -3,7 +3,7 @@ package com.hebs.moviedb.data.model.api
 import com.google.gson.annotations.SerializedName
 
 data class GenresListApiResponse(
-    @SerializedName("genres") val results: List<GenresApiResponse>
+    @SerializedName("genres") val genres: List<GenresApiResponse>
 )
 
 data class GenresApiResponse(

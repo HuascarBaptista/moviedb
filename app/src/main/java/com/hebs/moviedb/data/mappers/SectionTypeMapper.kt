@@ -4,7 +4,7 @@ import com.hebs.moviedb.data.model.local.SectionEntityType
 import com.hebs.moviedb.domain.model.SectionType
 import javax.inject.Inject
 
-class CategoryTypeMapper @Inject constructor() {
+class SectionTypeMapper @Inject constructor() {
 
     fun mapToEntity(categoryType: SectionType): SectionEntityType {
         return when (categoryType) {

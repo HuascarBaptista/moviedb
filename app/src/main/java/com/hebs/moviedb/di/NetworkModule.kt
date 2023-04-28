@@ -3,6 +3,7 @@ package com.hebs.moviedb.di
 import com.google.gson.Gson
 import com.hebs.moviedb.BuildConfig
 import com.hebs.moviedb.data.remote.common.AuthInterceptor
+import com.hebs.moviedb.data.remote.common.LanguageInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,6 +32,7 @@ internal object NetworkModule {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor(AuthInterceptor(BuildConfig.TMDB_API_KEY_CODE))
+            .addInterceptor(LanguageInterceptor())
             .build()
     }
 

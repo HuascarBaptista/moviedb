@@ -1,17 +1,15 @@
 package com.hebs.moviedb.data.repository
 
 import android.content.Context
-import android.util.Log
 import com.hebs.moviedb.R
 import com.hebs.moviedb.data.mappers.ApiResponseToGenreMapper
-import com.hebs.moviedb.data.mappers.ApiResponseToSectionMapper
+import com.hebs.moviedb.data.mappers.ApiResponseToResourceSectionMapper
 import com.hebs.moviedb.data.mappers.ApiResponseToVideoMediaMapper
-import com.hebs.moviedb.data.mappers.CategoryTypeMapper
 import com.hebs.moviedb.data.mappers.GenreEntityToGenreMapper
 import com.hebs.moviedb.data.mappers.GenreToGenreEntityMapper
-import com.hebs.moviedb.data.mappers.SectionResourcesEntityToSectionMapper
-import com.hebs.moviedb.data.mappers.SectionToResourcesEntityMapper
-import com.hebs.moviedb.data.mappers.SectionToSectionEntityMapper
+import com.hebs.moviedb.data.mappers.ResourceSectionToResourceEntityMapper
+import com.hebs.moviedb.data.mappers.ResourceSectionToSectionEntityMapper
+import com.hebs.moviedb.data.mappers.SectionEntityToResourceSectionMapper
 import com.hebs.moviedb.data.mappers.VideoMediaEntityToVideoMediaMapper
 import com.hebs.moviedb.data.mappers.VideoMediaToVideoMediaEntityMapper
 import com.hebs.moviedb.data.model.api.ResultsApiResponse
@@ -33,11 +31,10 @@ import javax.inject.Inject
 class TvShowRepositoryImpl @Inject constructor(
     private val tvShowRemoteDataSource: TvShowRemoteDataSource,
     private val localDataSource: ResourceDataSource,
-    private val apiResponseToSectionMapper: ApiResponseToSectionMapper,
-    private val sectionToSectionEntityMapper: SectionToSectionEntityMapper,
-    private val sectionToResourceEntityMapper: SectionToResourcesEntityMapper,
-    private val sectionResourcesEntityToSectionMapper: SectionResourcesEntityToSectionMapper,
-    private val categoryTypeMapper: CategoryTypeMapper,
+    private val apiResponseToResourceSectionMapper: ApiResponseToResourceSectionMapper,
+    private val resourceSectionToSectionEntityMapper: ResourceSectionToSectionEntityMapper,
+    private val sectionToResourceEntityMapper: ResourceSectionToResourceEntityMapper,
+    private val sectionEntityToResourceSectionMapper: SectionEntityToResourceSectionMapper,
     private val apiResponseToVideoMediaMapper: ApiResponseToVideoMediaMapper,
     private val videoMediaEntityToVideoMediaMapper: VideoMediaEntityToVideoMediaMapper,
     private val videoMediaToVideoMediaEntityMapper: VideoMediaToVideoMediaEntityMapper,
@@ -47,17 +44,19 @@ class TvShowRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : TvShowRepository {
 
-    override fun getPopularTvShowsSection() = getTvShowSection(
-        SectionType.POPULAR_TV_SHOWS,
-        context.getString(R.string.section_title_popular_tv_shows),
-        tvShowRemoteDataSource::getPopularTvShows
-    )
+    override fun getPopularTvShowsSection() =
+        getTvShowSection(
+            SectionType.POPULAR_TV_SHOWS,
+            context.getString(R.string.section_title_popular_tv_shows),
+            tvShowRemoteDataSource::getPopularTvShows
+        )
 
-    override fun getTopRatedTvShowsSection() = getTvShowSection(
-        SectionType.TOP_RATED_TV_SHOWS,
-        context.getString(R.string.section_title_top_rated_tv_shows),
-        tvShowRemoteDataSource::getTopRatedTvShows
-    )
+    override fun getTopRatedTvShowsSection() =
+        getTvShowSection(
+            SectionType.TOP_RATED_TV_SHOWS,
+            context.getString(R.string.section_title_top_rated_tv_shows),
+            tvShowRemoteDataSource::getTopRatedTvShows
+        )
 
     private fun getTvShowSection(
         categoryType: SectionType,
@@ -65,22 +64,24 @@ class TvShowRepositoryImpl @Inject constructor(
         remoteDataSourceCall: () -> Single<ResultsApiResponse>
     ): Single<ResourceSection> {
 
-        return remoteDataSourceCall().applyIoSchedulers().map {
-            apiResponseToSectionMapper.map(
+        return remoteDataSourceCall().map {
+            apiResponseToResourceSectionMapper.map(
                 resources = it,
                 categoryName = categoryName,
                 categoryType = categoryType,
             )
-        }.map { section ->
-            storeSectionData(section)
-            section
-        }.onErrorResumeNext {
-            retrieveLocalData(categoryType)
-        }
+        }.applyIoSchedulers()
+            .map { section ->
+                storeSectionData(section)
+                section
+            }.onErrorResumeNext {
+                getLocalResourceSectionByCategoryName(categoryName)
+            }
     }
 
-    private fun retrieveLocalData(categoryType: SectionType) =
-        localDataSource.getSectionBySectionType(categoryTypeMapper.mapToEntity(categoryType))
+    private fun getLocalResourceSectionByCategoryName(categoryName: String) =
+        localDataSource
+            .getSectionWithResourcesByCategoryName(categoryName)
             .applyIoSchedulers()
             .map { sectionWithResources ->
                 mapToResourceSection(sectionWithResources)
@@ -88,24 +89,25 @@ class TvShowRepositoryImpl @Inject constructor(
 
     private fun mapToResourceSection(sectionWithResources: SectionWithResources): ResourceSection {
         val resources = getResourcesOrderBySectionType(
-            sectionWithResources.section.categoryType, sectionWithResources
+            sectionWithResources.section.categoryType,
+            sectionWithResources
         )
         val sectionEntity = sectionWithResources.section
-        return sectionResourcesEntityToSectionMapper.map(sectionEntity, resources)
+        return sectionEntityToResourceSectionMapper.map(sectionEntity, resources)
     }
 
     private fun storeSectionData(section: ResourceSection) {
-        val sectionEntity = sectionToSectionEntityMapper.map(section)
+        val sectionEntity = resourceSectionToSectionEntityMapper.map(section)
         val resourcesEntity = sectionToResourceEntityMapper.map(section)
         localDataSource.insertAll(resourcesEntity, sectionEntity)
     }
 
     private fun getResourcesOrderBySectionType(
-        sectionType: SectionEntityType, sectionWithResources: SectionWithResources
+        sectionType: SectionEntityType,
+        sectionWithResources: SectionWithResources
     ) = when {
-        sectionType.isPopularType() -> sectionWithResources.resources.sortedByDescending { it.rating }
+        sectionType.isGenreType() || sectionType.isSearchType() || sectionType.isPopularType() -> sectionWithResources.resources.sortedByDescending { it.rating }
         sectionType.isTopRatedType() -> sectionWithResources.resources.sortedByDescending { it.score }
-        sectionType.isSearchType() -> sectionWithResources.resources.sortedByDescending { it.id }
         else -> {
             sectionWithResources.resources
         }
@@ -145,7 +147,7 @@ class TvShowRepositoryImpl @Inject constructor(
         val categoryType = SectionType.SEARCH
         val categoryName = context.getString(R.string.section_title_search, query)
         return tvShowRemoteDataSource.search(query).map {
-            apiResponseToSectionMapper.map(
+            apiResponseToResourceSectionMapper.map(
                 resources = it,
                 categoryName = categoryName,
                 categoryType = categoryType,
@@ -155,15 +157,14 @@ class TvShowRepositoryImpl @Inject constructor(
                 storeSectionData(section)
                 section
             }.onErrorResumeNext {
-                Log.e("hebshebs", " onErrorResumeNext $categoryName")
-                retrieveLocalDataByCategoryName(categoryName).toObservable()
+                getLocalResourceSectionByCategoryName(categoryName).toObservable()
             }
     }
 
     override fun getGenreList(): Single<List<Genre>> {
         return tvShowRemoteDataSource.getGenreList().applyIoSchedulers()
             .map { genreList ->
-                genreList.results.map {
+                genreList.genres.map {
                     apiResponseToGenreMapper.map(it)
                 }
             }.map { genreList ->
@@ -195,8 +196,7 @@ class TvShowRepositoryImpl @Inject constructor(
 
         return tvShowRemoteDataSource.getByGenre(genre.id).applyIoSchedulers()
             .map { byGenreList ->
-
-                apiResponseToSectionMapper.map(
+                apiResponseToResourceSectionMapper.map(
                     resources = byGenreList,
                     categoryName = categoryName,
                     categoryType = categoryType,
@@ -205,16 +205,7 @@ class TvShowRepositoryImpl @Inject constructor(
                 storeSectionData(section)
                 section
             }.onErrorResumeNext {
-                retrieveLocalDataByCategoryName(categoryName)
+                getLocalResourceSectionByCategoryName(categoryName)
             }
     }
-
-    private fun retrieveLocalDataByCategoryName(categoryName: String) =
-        localDataSource.getSectionByCategoryName(categoryName)
-            .applyIoSchedulers()
-            .map { sectionWithResources ->
-                mapToResourceSection(sectionWithResources)
-            }
-
-
 }

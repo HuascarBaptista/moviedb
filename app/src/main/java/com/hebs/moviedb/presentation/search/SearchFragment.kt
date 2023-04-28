@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -84,13 +83,12 @@ class SearchFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener
 
     private fun initViewModel() {
         viewModel.searchLiveData.observe(viewLifecycleOwner) {
-            Log.e("hebshebs", " Nuevo Evento $it")
-            when (it) {
-                is SearchSectionActions.ShowLoading -> binding.progressBarLoading.show()
-                is SearchSectionActions.HideLoading -> binding.progressBarLoading.hide()
-                is SearchSectionActions.UpdateSearch -> updateSearch(it.searchResults)
-                is SearchSectionActions.Error -> showError(it.message)
-            }
+                        when (it) {
+                            is SearchSectionActions.ShowLoading -> binding.progressBarLoading.show()
+                            is SearchSectionActions.HideLoading -> binding.progressBarLoading.hide()
+                            is SearchSectionActions.UpdateSearch -> updateSearch(it.searchResults)
+                            is SearchSectionActions.Error -> showError(it.message)
+                        }
         }
     }
 
@@ -103,15 +101,12 @@ class SearchFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener
     private fun updateSearch(search: Set<ResourceSection>) {
         binding.recyclerViewSearchResource.show()
         val searchItems = search.map {
-            Log.e("hebshebs", " Nuevo Item " + it.categoryName)
-            Log.e("hebshebs", " Tama;o recursos " + it.resources.size)
             CarouselResourceItem(
                 it,
                 this,
                 true
             )
         }
-        Log.e("hebshebs", " Agregar $searchItems")
         groupieAdapter.update(searchItems)
         binding.recyclerViewSearchResource.invalidate()
     }

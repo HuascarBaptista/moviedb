@@ -8,17 +8,17 @@ import com.hebs.moviedb.domain.model.SectionType
 import com.hebs.moviedb.domain.model.TvShow
 import javax.inject.Inject
 
-class ApiResponseToSectionMapper @Inject constructor() {
+class ApiResponseToResourceSectionMapper @Inject constructor() {
     fun map(
         resources: ResultsApiResponse,
         categoryName: String,
         categoryType: SectionType,
     ): ResourceSection {
-            return ResourceSection(
-                resources = resources.results.map { getResourceByType(it, categoryType) },
-                categoryType = categoryType,
-                categoryName = categoryName
-            )
+        return ResourceSection(
+            resources = resources.results.map { getResourceByType(it, categoryType) },
+            categoryType = categoryType,
+            categoryName = categoryName
+        )
     }
 
     private fun getResourceByType(

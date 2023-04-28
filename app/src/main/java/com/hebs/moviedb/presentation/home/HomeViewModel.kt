@@ -1,6 +1,5 @@
 package com.hebs.moviedb.presentation.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,7 +32,6 @@ internal class HomeViewModel @Inject constructor(
                 .applySchedulers()
                 .subscribe({
                     sectionsResults = sectionsResults + it
-                    Log.e("hebshebs", " Nuevo resultado " + sectionsResults.size)
                     _sectionsLiveData.postValue(
                         HomeSectionActions.UpdateSections(
                             sectionsResults

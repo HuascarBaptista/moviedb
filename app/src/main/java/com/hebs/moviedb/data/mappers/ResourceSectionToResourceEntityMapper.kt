@@ -5,7 +5,7 @@ import com.hebs.moviedb.data.model.local.ResourceEntityType
 import com.hebs.moviedb.domain.model.ResourceSection
 import javax.inject.Inject
 
-class SectionToResourcesEntityMapper @Inject constructor() {
+class ResourceSectionToResourceEntityMapper @Inject constructor() {
     fun map(resourceSection: ResourceSection): List<ResourceEntity> {
         return resourceSection.resources.map {
             ResourceEntity(

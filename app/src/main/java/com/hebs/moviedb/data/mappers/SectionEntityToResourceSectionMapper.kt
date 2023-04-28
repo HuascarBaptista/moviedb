@@ -7,9 +7,9 @@ import com.hebs.moviedb.domain.model.ResourceSection
 import com.hebs.moviedb.domain.model.TvShow
 import javax.inject.Inject
 
-class SectionResourcesEntityToSectionMapper @Inject constructor(private val categoryTypeMapper: CategoryTypeMapper) {
+class SectionEntityToResourceSectionMapper @Inject constructor(private val sectionTypeMapper: SectionTypeMapper) {
     fun map(sectionEntity: SectionEntity, resourcesEntity: List<ResourceEntity>): ResourceSection {
-        val categoryType = categoryTypeMapper.mapFromEntity(sectionEntity.categoryType)
+        val categoryType = sectionTypeMapper.mapFromEntity(sectionEntity.categoryType)
 
         val resources = resourcesEntity.map {
             if (it.type.isMovieType()) {

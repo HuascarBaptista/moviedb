@@ -2,7 +2,6 @@ package com.hebs.moviedb.presentation.home
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,12 +55,11 @@ class HomeFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener {
 
     private fun initViewModel() {
         viewModel.sectionsLiveData.observe(viewLifecycleOwner) {
-            Log.e("hebshebs", " Nuevo Evento $it")
-            when (it) {
-                is HomeSectionActions.HideLoading -> binding.progressBarLoading.hide()
-                is HomeSectionActions.UpdateSections -> updateSections(it.sections)
-                is HomeSectionActions.Error -> showError(it.message)
-            }
+                        when (it) {
+                            is HomeSectionActions.HideLoading -> binding.progressBarLoading.hide()
+                            is HomeSectionActions.UpdateSections -> updateSections(it.sections)
+                            is HomeSectionActions.Error -> showError(it.message)
+                        }
         }
         viewModel.loadMovies()
     }
@@ -74,14 +72,11 @@ class HomeFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener {
 
     private fun updateSections(sections: Set<ResourceSection>) {
         val sectionsItems = sections.map {
-            Log.e("hebshebs", " Nuevo Item " + it.categoryName)
-            Log.e("hebshebs", " Tama;o recursos " + it.resources.size)
             CarouselResourceItem(
                 it,
                 this
             )
         }
-        Log.e("hebshebs", " Agregar $sectionsItems")
         groupieAdapter.update(sectionsItems)
     }
 

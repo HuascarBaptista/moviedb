@@ -2,14 +2,13 @@ package com.hebs.moviedb.domain.di
 
 import android.content.Context
 import com.hebs.moviedb.data.mappers.ApiResponseToGenreMapper
-import com.hebs.moviedb.data.mappers.ApiResponseToSectionMapper
+import com.hebs.moviedb.data.mappers.ApiResponseToResourceSectionMapper
 import com.hebs.moviedb.data.mappers.ApiResponseToVideoMediaMapper
-import com.hebs.moviedb.data.mappers.CategoryTypeMapper
 import com.hebs.moviedb.data.mappers.GenreEntityToGenreMapper
 import com.hebs.moviedb.data.mappers.GenreToGenreEntityMapper
-import com.hebs.moviedb.data.mappers.SectionResourcesEntityToSectionMapper
-import com.hebs.moviedb.data.mappers.SectionToResourcesEntityMapper
-import com.hebs.moviedb.data.mappers.SectionToSectionEntityMapper
+import com.hebs.moviedb.data.mappers.ResourceSectionToResourceEntityMapper
+import com.hebs.moviedb.data.mappers.ResourceSectionToSectionEntityMapper
+import com.hebs.moviedb.data.mappers.SectionEntityToResourceSectionMapper
 import com.hebs.moviedb.data.mappers.VideoMediaEntityToVideoMediaMapper
 import com.hebs.moviedb.data.mappers.VideoMediaToVideoMediaEntityMapper
 import com.hebs.moviedb.data.remote.service.MovieService
@@ -54,11 +53,10 @@ internal object ResourceModule {
     fun provideMoviesRepository(
         movieRemoteDataSource: MovieRemoteDataSource,
         localDataSource: ResourceDataSource,
-        apiResponseToSectionMapper: ApiResponseToSectionMapper,
-        sectionToSectionEntityMapper: SectionToSectionEntityMapper,
-        sectionToResourceEntityMapper: SectionToResourcesEntityMapper,
-        sectionResourcesEntityToSectionMapper: SectionResourcesEntityToSectionMapper,
-        categoryTypeMapper: CategoryTypeMapper,
+        apiResponseToResourceSectionMapper: ApiResponseToResourceSectionMapper,
+        resourceSectionToSectionEntityMapper: ResourceSectionToSectionEntityMapper,
+        sectionToResourceEntityMapper: ResourceSectionToResourceEntityMapper,
+        sectionEntityToResourceSectionMapper: SectionEntityToResourceSectionMapper,
         apiResponseToVideoMediaMapper: ApiResponseToVideoMediaMapper,
         videoMediaEntityToVideoMediaMapper: VideoMediaEntityToVideoMediaMapper,
         videoMediaToVideoMediaEntityMapper: VideoMediaToVideoMediaEntityMapper,
@@ -70,11 +68,10 @@ internal object ResourceModule {
         return MovieRepositoryImpl(
             movieRemoteDataSource,
             localDataSource,
-            apiResponseToSectionMapper,
-            sectionToSectionEntityMapper,
+            apiResponseToResourceSectionMapper,
+            resourceSectionToSectionEntityMapper,
             sectionToResourceEntityMapper,
-            sectionResourcesEntityToSectionMapper,
-            categoryTypeMapper,
+            sectionEntityToResourceSectionMapper,
             apiResponseToVideoMediaMapper,
             videoMediaEntityToVideoMediaMapper,
             videoMediaToVideoMediaEntityMapper,
@@ -89,11 +86,10 @@ internal object ResourceModule {
     fun provideTvShowRepository(
         tvShowRemoteDataSource: TvShowRemoteDataSource,
         localDataSource: ResourceDataSource,
-        apiResponseToSectionMapper: ApiResponseToSectionMapper,
-        sectionToSectionEntityMapper: SectionToSectionEntityMapper,
-        sectionToResourceEntityMapper: SectionToResourcesEntityMapper,
-        sectionResourcesEntityToSectionMapper: SectionResourcesEntityToSectionMapper,
-        categoryTypeMapper: CategoryTypeMapper,
+        apiResponseToResourceSectionMapper: ApiResponseToResourceSectionMapper,
+        resourceSectionToSectionEntityMapper: ResourceSectionToSectionEntityMapper,
+        sectionToResourceEntityMapper: ResourceSectionToResourceEntityMapper,
+        sectionEntityToResourceSectionMapper: SectionEntityToResourceSectionMapper,
         apiResponseToVideoMediaMapper: ApiResponseToVideoMediaMapper,
         videoMediaEntityToVideoMediaMapper: VideoMediaEntityToVideoMediaMapper,
         videoMediaToVideoMediaEntityMapper: VideoMediaToVideoMediaEntityMapper,
@@ -105,11 +101,10 @@ internal object ResourceModule {
         return TvShowRepositoryImpl(
             tvShowRemoteDataSource,
             localDataSource,
-            apiResponseToSectionMapper,
-            sectionToSectionEntityMapper,
+            apiResponseToResourceSectionMapper,
+            resourceSectionToSectionEntityMapper,
             sectionToResourceEntityMapper,
-            sectionResourcesEntityToSectionMapper,
-            categoryTypeMapper,
+            sectionEntityToResourceSectionMapper,
             apiResponseToVideoMediaMapper,
             videoMediaEntityToVideoMediaMapper,
             videoMediaToVideoMediaEntityMapper,
