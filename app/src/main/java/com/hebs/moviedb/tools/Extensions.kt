@@ -1,9 +1,11 @@
 package com.hebs.moviedb.tools
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -48,13 +50,11 @@ fun <T> Fragment.viewBinding(initialize: () -> T): ReadOnlyProperty<Fragment, T>
         private var binding: T? = null
 
         init {
-            this@viewBinding
-                .viewLifecycleOwnerLiveData
-                .observe(
-                    this@viewBinding
-                ) { owner: LifecycleOwner ->
-                    owner.lifecycle.addObserver(this)
-                }
+            this@viewBinding.viewLifecycleOwnerLiveData.observe(
+                this@viewBinding
+            ) { owner: LifecycleOwner ->
+                owner.lifecycle.addObserver(this)
+            }
         }
 
         override fun onDestroy(owner: LifecycleOwner) {
@@ -62,8 +62,7 @@ fun <T> Fragment.viewBinding(initialize: () -> T): ReadOnlyProperty<Fragment, T>
         }
 
         override fun getValue(
-            thisRef: Fragment,
-            property: KProperty<*>
+            thisRef: Fragment, property: KProperty<*>
         ): T {
             return this.binding
                 ?: if (viewLifecycleOwner.lifecycle.currentState == Lifecycle.State.DESTROYED) {
@@ -78,27 +77,23 @@ fun <T> Fragment.viewBinding(initialize: () -> T): ReadOnlyProperty<Fragment, T>
 
 
 fun <T : Any> Single<T>.applySchedulers(): Single<T> {
-    return subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+    return subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 }
 
 fun <T : Any> Observable<T>.applySchedulers(): Observable<T> {
-    return subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+    return subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 }
+
 fun <T : Any> Flowable<T>.applySchedulers(): Flowable<T> {
-    return subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+    return subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 }
 
 fun <T : Any> Single<T>.applyIoSchedulers(): Single<T> {
-    return subscribeOn(Schedulers.io())
-        .observeOn(Schedulers.io())
+    return subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
 }
 
 fun <T : Any> Observable<T>.applyIoSchedulers(): Observable<T> {
-    return subscribeOn(Schedulers.io())
-        .observeOn(Schedulers.io())
+    return subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
 }
 
 private fun String?.getImageFullPath(): String? {
@@ -107,16 +102,10 @@ private fun String?.getImageFullPath(): String? {
 }
 
 fun ImageView.loadImage(url: String, useFullPath: Boolean = true) {
-    val requestOptions = RequestOptions()
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .centerCrop()
+    val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop()
 
-    val shimmer = Shimmer.AlphaHighlightBuilder()
-        .setDuration(1500)
-        .setBaseAlpha(0.9f)
-        .setHighlightAlpha(0.85f)
-        .setDirection(Shimmer.Direction.LEFT_TO_RIGHT)
-        .setAutoStart(true)
+    val shimmer = Shimmer.AlphaHighlightBuilder().setDuration(1500).setBaseAlpha(0.9f)
+        .setHighlightAlpha(0.85f).setDirection(Shimmer.Direction.LEFT_TO_RIGHT).setAutoStart(true)
         .build()
 
     val shimmerDrawable = ShimmerDrawable().apply {
@@ -124,9 +113,7 @@ fun ImageView.loadImage(url: String, useFullPath: Boolean = true) {
     }
 
     val imageFullPath = if (useFullPath) url.getImageFullPath() else url
-    Glide.with(this.context).load(imageFullPath)
-        .placeholder(shimmerDrawable)
-        .apply(requestOptions)
+    Glide.with(this.context).load(imageFullPath).placeholder(shimmerDrawable).apply(requestOptions)
         .into(this)
 }
 
@@ -145,4 +132,25 @@ fun openUrl(url: String, context: Context) {
         data = Uri.parse(url)
     }
     context.startActivity(intent)
+}
+
+
+fun Fragment.hideKeyboard() {
+    view?.let { activity?.hideKeyboard(it) }
+}
+
+fun Context.hideKeyboard(view: View) {
+    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+fun Fragment.showKeyboard() {
+    view?.let { activity?.showKeyboard() }
+}
+
+fun Context.showKeyboard() {
+    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.toggleSoftInput(
+        InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY
+    )
 }

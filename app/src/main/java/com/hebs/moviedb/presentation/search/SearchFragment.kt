@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
@@ -23,7 +24,9 @@ import com.hebs.moviedb.domain.model.actions.SearchSectionActions
 import com.hebs.moviedb.presentation.detail.DetailListener
 import com.hebs.moviedb.presentation.home.items.CarouselResourceItem
 import com.hebs.moviedb.tools.hide
+import com.hebs.moviedb.tools.hideKeyboard
 import com.hebs.moviedb.tools.show
+import com.hebs.moviedb.tools.showKeyboard
 import com.hebs.moviedb.tools.viewBinding
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,6 +56,18 @@ class SearchFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener
         initTextListener()
         initViewModel()
         initRecyclerView()
+        initSearchQueryAction()
+    }
+
+    private fun requestFocusOpenKeyboard() {
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                binding.editTextSearchQuery.requestFocus()
+            }
+        })
+        showKeyboard()
     }
 
     override fun onAttach(context: Context) {
@@ -86,6 +101,7 @@ class SearchFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener
     }
 
     private fun updateSearch(search: Set<ResourceSection>) {
+        binding.recyclerViewSearchResource.show()
         val searchItems = search.map {
             Log.e("hebshebs", " Nuevo Item " + it.categoryName)
             Log.e("hebshebs", " Tama;o recursos " + it.resources.size)
@@ -97,9 +113,9 @@ class SearchFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener
         }
         Log.e("hebshebs", " Agregar $searchItems")
         groupieAdapter.update(searchItems)
+        binding.recyclerViewSearchResource.invalidate()
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun initTextListener() {
         binding.editTextSearchQuery.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -111,20 +127,40 @@ class SearchFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener
                 updateQuery(currentText.toString())
             }
         })
+        binding.editTextSearchQuery.setOnEditorActionListener { _, _, _ ->
+            binding.editTextSearchQuery.clearFocus()
+            hideKeyboard()
+            true
+        }
+        removeQueryWhenTapped()
+    }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private fun removeQueryWhenTapped() {
         binding.editTextSearchQuery.setOnTouchListener { _, event ->
             if (isTappingTextDrawable(event) && binding.editTextSearchQuery.text?.isNotEmpty() == true) {
                 binding.editTextSearchQuery.setText("")
                 updateIcon(false)
-                binding.editTextSearchQuery.performClick()
+                updateQuery("")
                 return@setOnTouchListener true
             }
             false
         }
     }
 
+    private fun initSearchQueryAction() {
+        binding.editTextSearchQuery.performClick()
+        requestFocusOpenKeyboard()
+        binding.recyclerViewSearchResource.hide()
+    }
+
     private fun updateQuery(query: String) {
-        viewModel.search(query = query)
+        if (query.isBlank()) {
+            initSearchQueryAction()
+            binding.progressBarLoading.hide()
+        } else {
+            viewModel.search(query = query)
+        }
     }
 
     private fun isTappingTextDrawable(event: MotionEvent) =
