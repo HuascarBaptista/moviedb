@@ -26,12 +26,10 @@ internal class HomeViewModel @Inject constructor(
     fun loadMovies() {
         disposable.add(
             homeMoviesUseCase.getData()
-                .applySchedulers()
-                .doOnSubscribe {
-                    _sectionsLiveData.postValue(HomeSectionActions.Loading(true))
-                }.doOnNext {
-                    _sectionsLiveData.postValue(HomeSectionActions.Loading(false))
+                .doOnTerminate {
+                    _sectionsLiveData.postValue(HomeSectionActions.HideLoading)
                 }
+                .applySchedulers()
                 .subscribe({
                     sectionsResults = sectionsResults + it
                     _sectionsLiveData.postValue(
@@ -49,5 +47,9 @@ internal class HomeViewModel @Inject constructor(
                     }
                 )
         )
+    }
+
+    override fun onCleared() {
+        disposable.clear()
     }
 }

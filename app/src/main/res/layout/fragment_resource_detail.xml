@@ -86,24 +86,13 @@
             app:constraint_referenced_ids="cardView_poster,imageView_rating" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textView_title_overview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/general_margin"
-            android:layout_marginTop="@dimen/general_margin"
-            android:text="@string/subtitle_overview"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_section_barrier" />
-
-        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textView_overview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/general_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_title_overview"
-            tools:text="Lorem ipsum" />
+            app:layout_constraintTop_toBottomOf="@+id/main_section_barrier" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textView_title_media"
@@ -127,13 +116,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textView_title_media"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_video_media" />
-
-        <ProgressBar
-            android:layout_width="@dimen/big_icon_size"
-            android:layout_height="@dimen/big_icon_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_overview" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

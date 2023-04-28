@@ -2,16 +2,19 @@ package com.hebs.moviedb.domain.di
 
 import android.content.Context
 import com.hebs.moviedb.data.mappers.ApiResponseToSectionMapper
+import com.hebs.moviedb.data.mappers.ApiResponseToVideoMediaMapper
 import com.hebs.moviedb.data.mappers.CategoryTypeMapper
 import com.hebs.moviedb.data.mappers.SectionResourcesEntityToSectionMapper
 import com.hebs.moviedb.data.mappers.SectionToResourcesEntityMapper
 import com.hebs.moviedb.data.mappers.SectionToSectionEntityMapper
+import com.hebs.moviedb.data.mappers.VideoMediaEntityToVideoMediaMapper
+import com.hebs.moviedb.data.mappers.VideoMediaToVideoMediaEntityMapper
 import com.hebs.moviedb.data.remote.service.MovieService
 import com.hebs.moviedb.data.remote.service.TvShowService
 import com.hebs.moviedb.data.repository.MovieRepositoryImpl
 import com.hebs.moviedb.data.repository.TvShowRepositoryImpl
 import com.hebs.moviedb.data.source.local.AppDatabase
-import com.hebs.moviedb.data.source.local.source.LocalDataSource
+import com.hebs.moviedb.data.source.local.source.ResourceDataSource
 import com.hebs.moviedb.data.source.remote.MovieRemoteDataSource
 import com.hebs.moviedb.data.source.remote.TvShowRemoteDataSource
 import com.hebs.moviedb.domain.repository.MovieRepository
@@ -30,7 +33,7 @@ internal object ResourceModule {
 
     @Singleton
     @Provides
-    fun provideMovieLocalDataSource(appDatabase: AppDatabase): LocalDataSource {
+    fun provideMovieLocalDataSource(appDatabase: AppDatabase): ResourceDataSource {
         return appDatabase.localDataSource()
     }
 
@@ -47,12 +50,15 @@ internal object ResourceModule {
     @Provides
     fun provideMoviesRepository(
         movieRemoteDataSource: MovieRemoteDataSource,
-        localDataSource: LocalDataSource,
+        localDataSource: ResourceDataSource,
         apiResponseToSectionMapper: ApiResponseToSectionMapper,
         sectionToSectionEntityMapper: SectionToSectionEntityMapper,
         sectionToResourceEntityMapper: SectionToResourcesEntityMapper,
         sectionResourcesEntityToSectionMapper: SectionResourcesEntityToSectionMapper,
         categoryTypeMapper: CategoryTypeMapper,
+        apiResponseToVideoMediaMapper: ApiResponseToVideoMediaMapper,
+        videoMediaEntityToVideoMediaMapper: VideoMediaEntityToVideoMediaMapper,
+        videoMediaToVideoMediaEntityMapper: VideoMediaToVideoMediaEntityMapper,
         @ApplicationContext context: Context
     ): MovieRepository {
         return MovieRepositoryImpl(
@@ -63,6 +69,9 @@ internal object ResourceModule {
             sectionToResourceEntityMapper,
             sectionResourcesEntityToSectionMapper,
             categoryTypeMapper,
+            apiResponseToVideoMediaMapper,
+            videoMediaEntityToVideoMediaMapper,
+            videoMediaToVideoMediaEntityMapper,
             context
         )
     }
@@ -70,12 +79,15 @@ internal object ResourceModule {
     @Provides
     fun provideTvShowRepository(
         tvShowRemoteDataSource: TvShowRemoteDataSource,
-        localDataSource: LocalDataSource,
+        localDataSource: ResourceDataSource,
         apiResponseToSectionMapper: ApiResponseToSectionMapper,
         sectionToSectionEntityMapper: SectionToSectionEntityMapper,
         sectionToResourceEntityMapper: SectionToResourcesEntityMapper,
         sectionResourcesEntityToSectionMapper: SectionResourcesEntityToSectionMapper,
         categoryTypeMapper: CategoryTypeMapper,
+        apiResponseToVideoMediaMapper: ApiResponseToVideoMediaMapper,
+        videoMediaEntityToVideoMediaMapper: VideoMediaEntityToVideoMediaMapper,
+        videoMediaToVideoMediaEntityMapper: VideoMediaToVideoMediaEntityMapper,
         @ApplicationContext context: Context
     ): TvShowRepository {
         return TvShowRepositoryImpl(
@@ -86,6 +98,9 @@ internal object ResourceModule {
             sectionToResourceEntityMapper,
             sectionResourcesEntityToSectionMapper,
             categoryTypeMapper,
+            apiResponseToVideoMediaMapper,
+            videoMediaEntityToVideoMediaMapper,
+            videoMediaToVideoMediaEntityMapper,
             context
         )
     }

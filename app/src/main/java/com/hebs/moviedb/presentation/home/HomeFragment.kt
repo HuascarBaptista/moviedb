@@ -9,10 +9,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.hebs.moviedb.databinding.FragmentHomeBinding
+import com.hebs.moviedb.domain.model.Resource
 import com.hebs.moviedb.domain.model.ResourceSection
 import com.hebs.moviedb.domain.model.actions.HomeSectionActions
 import com.hebs.moviedb.presentation.detail.DetailListener
 import com.hebs.moviedb.presentation.home.items.SectionHomeItem
+import com.hebs.moviedb.tools.hide
 import com.hebs.moviedb.tools.viewBinding
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +32,7 @@ class HomeFragment : Fragment(), SectionHomeItem.ResourceSelectedListener {
 
     private val viewModel: HomeViewModel by viewModels()
 
-    private val adapter = GroupieAdapter()
+    private val groupieAdapter = GroupieAdapter()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,13 +50,13 @@ class HomeFragment : Fragment(), SectionHomeItem.ResourceSelectedListener {
     }
 
     private fun initRecyclerView() {
-        binding.recyclerViewHomeSection.adapter = adapter
+        binding.recyclerViewHomeSection.adapter = groupieAdapter
     }
 
     private fun initViewModel() {
         viewModel.sectionsLiveData.observe(viewLifecycleOwner) {
             when (it) {
-                is HomeSectionActions.Loading -> showLoading(it.shouldShow)
+                is HomeSectionActions.HideLoading -> binding.progressBarLoading.hide()
                 is HomeSectionActions.UpdateSections -> updateSections(it.sections)
                 is HomeSectionActions.Error -> showError(it.message)
             }
@@ -75,14 +77,10 @@ class HomeFragment : Fragment(), SectionHomeItem.ResourceSelectedListener {
                 this
             )
         }
-        adapter.update(sectionsItems)
+        groupieAdapter.update(sectionsItems)
     }
 
-    private fun showLoading(shouldShow: Boolean) {
-        binding.progressBarLoading.visibility = if (shouldShow) View.VISIBLE else View.GONE
-    }
-
-    override fun onItemSelected(id: Int) {
-        listener?.showDetail(id)
+    override fun onItemSelected(resource: Resource) {
+        listener?.showDetail(resource)
     }
 }

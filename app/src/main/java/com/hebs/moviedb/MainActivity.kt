@@ -7,6 +7,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.hebs.moviedb.databinding.ActivityMainBinding
+import com.hebs.moviedb.domain.model.Resource
+import com.hebs.moviedb.presentation.detail.DetailFragmentArgs
 import com.hebs.moviedb.presentation.detail.DetailListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,14 +32,19 @@ class MainActivity : AppCompatActivity(), DetailListener {
         setContentView(binding.root)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_search, R.id.navigation_genres
+                R.id.navigation_home_fragment,
+                R.id.navigation_search_fragment,
+                R.id.navigation_genres_fragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         getNavigationView().setupWithNavController(navController)
     }
 
-    override fun showDetail(id: Int) {
-        TODO("Not yet implemented")
+    override fun showDetail(resource: Resource) {
+        val arguments = DetailFragmentArgs(
+            resource = resource
+        ).toBundle()
+        navController.navigate(R.id.navigation_detail_fragment, arguments)
     }
 }

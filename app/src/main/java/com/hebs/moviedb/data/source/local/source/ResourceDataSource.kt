@@ -10,13 +10,18 @@ import com.hebs.moviedb.data.model.local.SectionEntity
 import com.hebs.moviedb.data.model.local.SectionEntityType
 import com.hebs.moviedb.data.model.local.SectionResourceCrossEntity
 import com.hebs.moviedb.data.model.local.SectionWithResources
+import com.hebs.moviedb.data.model.local.VideoMediaEntity
 import io.reactivex.rxjava3.core.Single
 
 @Dao
-interface LocalDataSource {
+interface ResourceDataSource {
     @Transaction
     @Query("SELECT * FROM section WHERE categoryType = :categoryType")
     fun getSectionBySectionType(categoryType: SectionEntityType): Single<SectionWithResources>
+
+    @Transaction
+    @Query("SELECT * FROM video WHERE resourceId = :resourceId")
+    fun getVideosMediaByResourceId(resourceId: Int): Single<List<VideoMediaEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertResources(resource: List<ResourceEntity>)
@@ -26,6 +31,9 @@ interface LocalDataSource {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSectionWithResource(sectionWithResources: SectionResourceCrossEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertVideoMediaEntity(videoMediaEntity: List<VideoMediaEntity>)
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)

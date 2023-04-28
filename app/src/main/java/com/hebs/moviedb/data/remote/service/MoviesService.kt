@@ -1,7 +1,7 @@
 package com.hebs.moviedb.data.remote.service
 
+import com.hebs.moviedb.data.model.api.ResultVideoApiResponse
 import com.hebs.moviedb.data.model.api.ResultsApiResponse
-import com.hebs.moviedb.data.model.api.VideoApiResponse
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -19,7 +19,7 @@ interface MovieService {
     fun getTopRatedMovies(): Single<ResultsApiResponse>
 
     @GET("/3/movie/{movie_id}/videos")
-    fun getMovieMedia(@Path("movie_id") id: Int): Single<List<VideoApiResponse>>
+    fun getMovieMedia(@Path("movie_id") id: Int): Single<ResultVideoApiResponse>
 
     @GET("/3/search/movie")
     fun search(@Query("query") term: String): Single<ResultsApiResponse>

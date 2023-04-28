@@ -3,17 +3,21 @@ package com.hebs.moviedb.data.repository
 import android.content.Context
 import com.hebs.moviedb.R
 import com.hebs.moviedb.data.mappers.ApiResponseToSectionMapper
+import com.hebs.moviedb.data.mappers.ApiResponseToVideoMediaMapper
 import com.hebs.moviedb.data.mappers.CategoryTypeMapper
 import com.hebs.moviedb.data.mappers.SectionResourcesEntityToSectionMapper
 import com.hebs.moviedb.data.mappers.SectionToResourcesEntityMapper
 import com.hebs.moviedb.data.mappers.SectionToSectionEntityMapper
+import com.hebs.moviedb.data.mappers.VideoMediaEntityToVideoMediaMapper
+import com.hebs.moviedb.data.mappers.VideoMediaToVideoMediaEntityMapper
 import com.hebs.moviedb.data.model.api.ResultsApiResponse
 import com.hebs.moviedb.data.model.local.SectionEntityType
 import com.hebs.moviedb.data.model.local.SectionWithResources
-import com.hebs.moviedb.data.source.local.source.LocalDataSource
+import com.hebs.moviedb.data.source.local.source.ResourceDataSource
 import com.hebs.moviedb.data.source.remote.MovieRemoteDataSource
 import com.hebs.moviedb.domain.model.ResourceSection
 import com.hebs.moviedb.domain.model.SectionType
+import com.hebs.moviedb.domain.model.VideoMedia
 import com.hebs.moviedb.domain.repository.MovieRepository
 import com.hebs.moviedb.tools.applyIoSchedulers
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,12 +27,15 @@ import kotlin.reflect.KFunction0
 
 class MovieRepositoryImpl @Inject constructor(
     private val movieRemoteDataSource: MovieRemoteDataSource,
-    private val localDataSource: LocalDataSource,
+    private val localDataSource: ResourceDataSource,
     private val apiResponseToSectionMapper: ApiResponseToSectionMapper,
     private val sectionToSectionEntityMapper: SectionToSectionEntityMapper,
     private val sectionToResourceEntityMapper: SectionToResourcesEntityMapper,
     private val sectionResourcesEntityToSectionMapper: SectionResourcesEntityToSectionMapper,
     private val categoryTypeMapper: CategoryTypeMapper,
+    private val apiResponseToVideoMediaMapper: ApiResponseToVideoMediaMapper,
+    private val videoMediaEntityToVideoMediaMapper: VideoMediaEntityToVideoMediaMapper,
+    private val videoMediaToVideoMediaEntityMapper: VideoMediaToVideoMediaEntityMapper,
     @ApplicationContext private val context: Context
 ) : MovieRepository {
 
@@ -46,17 +53,6 @@ class MovieRepositoryImpl @Inject constructor(
             movieRemoteDataSource::getTopRatedMovies
         )
 
-    override fun getMovieVideos(id: Int) {
-        movieRemoteDataSource.getMovieVideos(id)
-    }
-
-    override fun search(term: String) =
-        getMovieSection(
-            SectionType.SEARCH_MOVIES,
-            context.getString(R.string.section_title_search_movies),
-            movieRemoteDataSource::getTopRatedMovies
-        )
-
     private fun getMovieSection(
         categoryType: SectionType,
         categoryName: String,
@@ -71,14 +67,14 @@ class MovieRepositoryImpl @Inject constructor(
             )
         }.applyIoSchedulers()
             .map { section ->
-                storeData(section)
+                storeSectionData(section)
                 section
             }.onErrorResumeNext {
-                retrieveLocalData(categoryType)
+                getLocalResourceSectionBySectionType(categoryType)
             }
     }
 
-    private fun retrieveLocalData(categoryType: SectionType) =
+    private fun getLocalResourceSectionBySectionType(categoryType: SectionType) =
         localDataSource
             .getSectionBySectionType(categoryTypeMapper.mapToEntity(categoryType))
             .applyIoSchedulers()
@@ -95,7 +91,7 @@ class MovieRepositoryImpl @Inject constructor(
         return sectionResourcesEntityToSectionMapper.map(sectionEntity, resources)
     }
 
-    private fun storeData(section: ResourceSection) {
+    private fun storeSectionData(section: ResourceSection) {
         val sectionEntity = sectionToSectionEntityMapper.map(section)
         val resourcesEntity = sectionToResourceEntityMapper.map(section)
         localDataSource.insertAll(resourcesEntity, sectionEntity)
@@ -112,4 +108,42 @@ class MovieRepositoryImpl @Inject constructor(
             sectionWithResources.resources
         }
     }
+
+    override fun getVideoMedia(resourceId: Int): Single<List<VideoMedia>> {
+        return movieRemoteDataSource.getVideoMedia(resourceId).applyIoSchedulers()
+            .map { videoList ->
+                videoList.results.map {
+                    apiResponseToVideoMediaMapper.map(it)
+                }
+            }.map { videoMediaList ->
+                storeVideoMediaList(videoMediaList, resourceId)
+                videoMediaList
+            }.onErrorResumeNext {
+                getLocalVideoMediaByResourceId(resourceId)
+            }
+    }
+
+    private fun storeVideoMediaList(videoMediaList: List<VideoMedia>, resourceId: Int) {
+        val videoMediaEntity =
+            videoMediaList.map { videoMediaToVideoMediaEntityMapper.map(it, resourceId) }
+        localDataSource.insertVideoMediaEntity(videoMediaEntity)
+    }
+
+    private fun getLocalVideoMediaByResourceId(resourceId: Int): Single<List<VideoMedia>> =
+        localDataSource
+            .getVideosMediaByResourceId(resourceId)
+            .applyIoSchedulers()
+            .map { videoMediaList ->
+                videoMediaList.map {
+                    videoMediaEntityToVideoMediaMapper.map(it)
+                }
+            }
+
+    override fun search(term: String) =
+        getMovieSection(
+            SectionType.SEARCH_MOVIES,
+            context.getString(R.string.section_title_search_movies),
+            movieRemoteDataSource::getTopRatedMovies
+        )
+
 }

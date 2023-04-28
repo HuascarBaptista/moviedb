@@ -20,10 +20,8 @@ class SectionVideoItem(
     override fun bind(viewBinding: ItemSectionVideoBinding, position: Int) {
         viewBinding.textViewVideoTitle.text = resource.title
         viewBinding.root.setOnClickListener {
-            resource.id.let { it1 ->
-                sectionSelectedListener.onItemSelected(
-                    it1
-                )
+            resource.id.let {
+                sectionSelectedListener.onItemSelected(resource)
             }
         }
         resource.posterImageUrl?.let {

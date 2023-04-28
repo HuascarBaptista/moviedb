@@ -4,7 +4,7 @@ import com.hebs.moviedb.data.model.api.VideoApiResponse
 import com.hebs.moviedb.domain.model.VideoMedia
 import javax.inject.Inject
 
-class VideoEntityToVideoMediaMapper @Inject constructor() {
+class ApiResponseToVideoMediaMapper @Inject constructor() {
     fun map(entity: VideoApiResponse): VideoMedia {
         return VideoMedia(
             id = entity.id,

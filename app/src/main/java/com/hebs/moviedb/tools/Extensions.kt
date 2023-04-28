@@ -1,5 +1,9 @@
 package com.hebs.moviedb.tools
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.view.View
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -72,6 +76,11 @@ fun <T> Fragment.viewBinding(initialize: () -> T): ReadOnlyProperty<Fragment, T>
     }
 
 
+fun <T : Any> Single<T>.applySchedulers(): Single<T> {
+    return subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+}
+
 fun <T : Any> Flowable<T>.applySchedulers(): Flowable<T> {
     return subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -87,7 +96,7 @@ private fun String?.getImageFullPath(): String? {
         ?.let { "${BuildConfig.TMDB_IMAGE_BASE_URL}/$this" }
 }
 
-fun ImageView.loadImage(url: String) {
+fun ImageView.loadImage(url: String, useFullPath: Boolean = true) {
     val requestOptions = RequestOptions()
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .centerCrop()
@@ -104,8 +113,26 @@ fun ImageView.loadImage(url: String) {
         setShimmer(shimmer)
     }
 
-    Glide.with(this.context).load(url.getImageFullPath())
+    val imageFullPath = if (useFullPath) url.getImageFullPath() else url
+    Glide.with(this.context).load(imageFullPath)
         .placeholder(shimmerDrawable)
         .apply(requestOptions)
         .into(this)
+}
+
+
+fun View.show() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.hide() {
+    this.visibility = View.GONE
+}
+
+fun openUrl(url: String, context: Context) {
+    val intent = Intent(Intent.ACTION_VIEW).apply {
+        addCategory(Intent.CATEGORY_BROWSABLE)
+        data = Uri.parse(url)
+    }
+    context.startActivity(intent)
 }

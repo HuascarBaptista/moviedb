@@ -3,23 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_home_fragment">
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_home_fragment"
         android:name="com.hebs.moviedb.presentation.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_search"
+        android:id="@+id/navigation_search_fragment"
         android:name="com.hebs.moviedb.presentation.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
-        android:id="@+id/navigation_genres"
-        android:name="com.hebs.moviedb.presentation.genres.SelectGenreFragment"
-        android:label="@string/title_genres"
-        tools:layout="@layout/fragment_search_by_genre" />
+        android:id="@+id/navigation_detail_fragment"
+        android:name="com.hebs.moviedb.presentation.detail.DetailFragment"
+        android:label="@string/title_detail"
+        tools:layout="@layout/fragment_resource_detail">
+        <argument
+            android:name="resource"
+            app:argType="com.hebs.moviedb.domain.model.Resource" />
+    </fragment>
 </navigation>

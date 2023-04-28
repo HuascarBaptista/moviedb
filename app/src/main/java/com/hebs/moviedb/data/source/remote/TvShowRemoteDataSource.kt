@@ -1,7 +1,7 @@
 package com.hebs.moviedb.data.source.remote
 
+import com.hebs.moviedb.data.model.api.ResultVideoApiResponse
 import com.hebs.moviedb.data.model.api.ResultsApiResponse
-import com.hebs.moviedb.data.model.api.VideoApiResponse
 import com.hebs.moviedb.data.remote.service.TvShowService
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
@@ -16,7 +16,7 @@ open class TvShowRemoteDataSource @Inject constructor(
     fun getTopRatedTvShows(): Single<ResultsApiResponse> =
         tvShowService.getTopRatedTvShows()
 
-    fun getTvShowVideos(id: Int): Single<List<VideoApiResponse>> =
+    fun getVideoMedia(id: Int): Single<ResultVideoApiResponse> =
         tvShowService.getTvShowMedia(id)
 
     fun search(term: String): Single<ResultsApiResponse> =

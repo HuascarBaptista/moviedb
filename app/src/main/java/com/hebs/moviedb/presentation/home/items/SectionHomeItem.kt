@@ -13,7 +13,7 @@ class SectionHomeItem(
     private val resourceSelectedListener: ResourceSelectedListener
 ) : BindableItem<ItemHomeSectionBinding>() {
 
-    private val adapter = GroupieAdapter()
+    private val groupieAdapter = GroupieAdapter()
 
     override fun getLayout() = R.layout.item_home_section
 
@@ -22,8 +22,8 @@ class SectionHomeItem(
 
     override fun bind(viewBinding: ItemHomeSectionBinding, position: Int) {
         viewBinding.textViewSectionTitle.text = resourceSection.categoryName
-        viewBinding.recyclerViewSectionVideos.adapter = adapter
-        adapter.update(mapResourcesItems(resourceSection.resources))
+        groupieAdapter.update(mapResourcesItems(resourceSection.resources))
+        viewBinding.recyclerViewSectionVideos.adapter = groupieAdapter
     }
 
     private fun mapResourcesItems(resources: List<Resource>): List<SectionVideoItem> {
@@ -36,6 +36,6 @@ class SectionHomeItem(
     }
 
     interface ResourceSelectedListener {
-        fun onItemSelected(id: Int)
+        fun onItemSelected(resource: Resource)
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/horizontal_margin"
+    android:layout_marginHorizontal="@dimen/small_margin"
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
@@ -29,7 +29,7 @@
         android:id="@+id/textView_video_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general_margin"
+        android:layout_marginTop="@dimen/small_margin"
         android:ellipsize="end"
         android:gravity="start"
         android:lines="2"

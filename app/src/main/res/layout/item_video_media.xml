@@ -7,7 +7,7 @@
     android:layout_marginEnd="@dimen/small_margin">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/videoImageContainer"
+        android:id="@+id/cardView_detail_video"
         android:layout_width="@dimen/media_width"
         android:layout_height="0dp"
         android:layout_margin="@dimen/small_margin"
@@ -36,9 +36,9 @@
         android:lines="2"
         android:textAppearance="@style/TextAppearance.TitleListItem"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/videoImageContainer"
-        app:layout_constraintStart_toStartOf="@+id/videoImageContainer"
-        app:layout_constraintTop_toBottomOf="@+id/videoImageContainer"
+        app:layout_constraintEnd_toEndOf="@+id/cardView_detail_video"
+        app:layout_constraintStart_toStartOf="@+id/cardView_detail_video"
+        app:layout_constraintTop_toBottomOf="@+id/cardView_detail_video"
         tools:text="Video name" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -47,10 +47,10 @@
         android:layout_height="@dimen/big_icon_size"
         android:elevation="@dimen/card_elevation"
         android:src="@drawable/ic_play"
-        app:layout_constraintBottom_toBottomOf="@+id/videoImageContainer"
-        app:layout_constraintEnd_toEndOf="@+id/videoImageContainer"
-        app:layout_constraintStart_toStartOf="@+id/videoImageContainer"
-        app:layout_constraintTop_toTopOf="@+id/videoImageContainer"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView_detail_video"
+        app:layout_constraintEnd_toEndOf="@+id/cardView_detail_video"
+        app:layout_constraintStart_toStartOf="@+id/cardView_detail_video"
+        app:layout_constraintTop_toTopOf="@+id/cardView_detail_video"
         app:tint="@color/white_50" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

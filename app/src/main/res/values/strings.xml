@@ -7,9 +7,10 @@
     <string name="title_home">Home</string>
     <string name="title_search">Buscador</string>
     <string name="title_genres">Generos</string>
+    <string name="title_detail">Detalle</string>
     <string name="empty_search">Lo sentimos\n Sin resultados</string>
     <string name="subtitle_overview">Descripcion general</string>
-    <string name="title_media">Trailers</string>
+    <string name="title_media">Media</string>
     <string name="section_title_top_rated_movies">Top Peliculas rankeadas</string>
     <string name="section_title_top_rated_tv_shows">Top Series rankeadas</string>
     <string name="section_title_popular_movies">Rating Peliculas populares</string>

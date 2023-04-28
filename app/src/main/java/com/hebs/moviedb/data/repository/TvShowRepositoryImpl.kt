@@ -3,17 +3,21 @@ package com.hebs.moviedb.data.repository
 import android.content.Context
 import com.hebs.moviedb.R
 import com.hebs.moviedb.data.mappers.ApiResponseToSectionMapper
+import com.hebs.moviedb.data.mappers.ApiResponseToVideoMediaMapper
 import com.hebs.moviedb.data.mappers.CategoryTypeMapper
 import com.hebs.moviedb.data.mappers.SectionResourcesEntityToSectionMapper
 import com.hebs.moviedb.data.mappers.SectionToResourcesEntityMapper
 import com.hebs.moviedb.data.mappers.SectionToSectionEntityMapper
+import com.hebs.moviedb.data.mappers.VideoMediaEntityToVideoMediaMapper
+import com.hebs.moviedb.data.mappers.VideoMediaToVideoMediaEntityMapper
 import com.hebs.moviedb.data.model.api.ResultsApiResponse
 import com.hebs.moviedb.data.model.local.SectionEntityType
 import com.hebs.moviedb.data.model.local.SectionWithResources
-import com.hebs.moviedb.data.source.local.source.LocalDataSource
+import com.hebs.moviedb.data.source.local.source.ResourceDataSource
 import com.hebs.moviedb.data.source.remote.TvShowRemoteDataSource
 import com.hebs.moviedb.domain.model.ResourceSection
 import com.hebs.moviedb.domain.model.SectionType
+import com.hebs.moviedb.domain.model.VideoMedia
 import com.hebs.moviedb.domain.repository.TvShowRepository
 import com.hebs.moviedb.tools.applyIoSchedulers
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,12 +27,15 @@ import kotlin.reflect.KFunction0
 
 class TvShowRepositoryImpl @Inject constructor(
     private val tvShowRemoteDataSource: TvShowRemoteDataSource,
-    private val tvShowLocalDataSource: LocalDataSource,
+    private val localDataSource: ResourceDataSource,
     private val apiResponseToSectionMapper: ApiResponseToSectionMapper,
     private val sectionToSectionEntityMapper: SectionToSectionEntityMapper,
     private val sectionToResourceEntityMapper: SectionToResourcesEntityMapper,
     private val sectionResourcesEntityToSectionMapper: SectionResourcesEntityToSectionMapper,
     private val categoryTypeMapper: CategoryTypeMapper,
+    private val apiResponseToVideoMediaMapper: ApiResponseToVideoMediaMapper,
+    private val videoMediaEntityToVideoMediaMapper: VideoMediaEntityToVideoMediaMapper,
+    private val videoMediaToVideoMediaEntityMapper: VideoMediaToVideoMediaEntityMapper,
     @ApplicationContext private val context: Context
 ) : TvShowRepository {
 
@@ -44,39 +51,28 @@ class TvShowRepositoryImpl @Inject constructor(
         tvShowRemoteDataSource::getTopRatedTvShows
     )
 
-    override fun getTvShowVideos(id: Int) {
-        tvShowRemoteDataSource.getTvShowVideos(id)
-    }
-
-    override fun search(term: String) = getTvShowSection(
-        SectionType.SEARCH_TV_SHOWS,
-        context.getString(R.string.section_title_search_tv_shows),
-        tvShowRemoteDataSource::getTopRatedTvShows
-    )
-
     private fun getTvShowSection(
         categoryType: SectionType,
         categoryName: String,
         remoteDataSourceCall: KFunction0<Single<ResultsApiResponse>>
     ): Single<ResourceSection> {
 
-        return remoteDataSourceCall().map {
+        return remoteDataSourceCall().applyIoSchedulers().map {
             apiResponseToSectionMapper.map(
                 resources = it,
                 categoryName = categoryName,
                 categoryType = categoryType,
             )
-        }.applyIoSchedulers()
-            .map { section ->
-                storeData(section)
-                section
-            }.onErrorResumeNext {
-                retrieveLocalData(categoryType)
-            }
+        }.map { section ->
+            storeData(section)
+            section
+        }.onErrorResumeNext {
+            retrieveLocalData(categoryType)
+        }
     }
 
     private fun retrieveLocalData(categoryType: SectionType) =
-        tvShowLocalDataSource.getSectionBySectionType(categoryTypeMapper.mapToEntity(categoryType))
+        localDataSource.getSectionBySectionType(categoryTypeMapper.mapToEntity(categoryType))
             .applyIoSchedulers()
             .map { sectionWithResources ->
                 mapToResourceSection(sectionWithResources)
@@ -93,7 +89,7 @@ class TvShowRepositoryImpl @Inject constructor(
     private fun storeData(section: ResourceSection) {
         val sectionEntity = sectionToSectionEntityMapper.map(section)
         val resourcesEntity = sectionToResourceEntityMapper.map(section)
-        tvShowLocalDataSource.insertAll(resourcesEntity, sectionEntity)
+        localDataSource.insertAll(resourcesEntity, sectionEntity)
     }
 
     private fun getResourcesOrderBySectionType(
@@ -106,4 +102,42 @@ class TvShowRepositoryImpl @Inject constructor(
             sectionWithResources.resources
         }
     }
+
+    override fun getVideoMedia(resourceId: Int): Single<List<VideoMedia>> {
+        return tvShowRemoteDataSource.getVideoMedia(resourceId).applyIoSchedulers()
+            .map { videoList ->
+                videoList.results.map {
+                    apiResponseToVideoMediaMapper.map(it)
+                }
+            }.map { videoMediaList ->
+                storeVideoMediaList(videoMediaList, resourceId)
+                videoMediaList
+            }.onErrorResumeNext {
+                getLocalVideoMediaByResourceId(resourceId)
+            }
+    }
+
+    private fun storeVideoMediaList(videoMediaList: List<VideoMedia>, resourceId: Int) {
+        val videoMediaEntity =
+            videoMediaList.map { videoMediaToVideoMediaEntityMapper.map(it, resourceId) }
+        localDataSource.insertVideoMediaEntity(videoMediaEntity)
+    }
+
+    private fun getLocalVideoMediaByResourceId(resourceId: Int): Single<List<VideoMedia>> =
+        localDataSource
+            .getVideosMediaByResourceId(resourceId)
+            .applyIoSchedulers()
+            .map { videoMediaList ->
+                videoMediaList.map {
+                    videoMediaEntityToVideoMediaMapper.map(it)
+                }
+            }
+
+
+    override fun search(term: String) = getTvShowSection(
+        SectionType.SEARCH_TV_SHOWS,
+        context.getString(R.string.section_title_search_tv_shows),
+        tvShowRemoteDataSource::getTopRatedTvShows
+    )
+
 }
