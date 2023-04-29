@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/general_margin"
             android:text="@string/empty_search"
+            android:visibility="gone"
             android:textAppearance="@style/TextAppearance.EmptyMessage"
             app:layout_constraintBottom_toBottomOf="@+id/recyclerView_section_genres"
             app:layout_constraintEnd_toEndOf="@+id/recyclerView_section_genres"
