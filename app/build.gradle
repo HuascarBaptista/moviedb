@@ -76,11 +76,6 @@ dependencies {
     implementation presentationDependencies.glide
     implementation presentationDependencies.swipeRefresh
 
-    // Tests
-    testImplementation testDependencies.junit
-    androidTestImplementation testDependencies.espresso
-    androidTestImplementation testDependencies.extJunit
-
     // Dependency injection
     implementation appDependencies.hilt
     kapt appDependencies.hiltCompiler
@@ -94,6 +89,17 @@ dependencies {
     kapt dataDependencies.roomCompiler
     implementation dataDependencies.roomExtensions
     implementation dataDependencies.roomRx
+
+    // Tests
+    testImplementation testDependencies.junit
+    testImplementation testDependencies.junitEngine
+    testImplementation testDependencies.mockito
+    testImplementation testDependencies.mockitoJunit
+    testImplementation testDependencies.coreTester
+    testImplementation testDependencies.mockitoKotlin
+    testImplementation testDependencies.mockk
+    testImplementation testDependencies.mockkAndroid
+
 }
 
 kapt {

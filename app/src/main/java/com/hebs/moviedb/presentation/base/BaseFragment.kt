@@ -30,4 +30,5 @@ abstract class BaseFragment : Fragment() {
     private fun hideLoading() {
         getRefreshLayout()?.isRefreshing = false
     }
+
 }
