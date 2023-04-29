@@ -11,6 +11,18 @@
         android:layout_height="match_parent"
         tools:context=".presentation.genres.SearchByGenreFragment">
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textView_default_offline_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/general_margin"
+            android:text="@string/empty_search"
+            android:textAppearance="@style/TextAppearance.EmptyMessage"
+            app:layout_constraintBottom_toBottomOf="@+id/recyclerView_by_genre_resource"
+            app:layout_constraintEnd_toEndOf="@+id/recyclerView_by_genre_resource"
+            app:layout_constraintStart_toStartOf="@+id/recyclerView_by_genre_resource"
+            app:layout_constraintTop_toTopOf="@id/recyclerView_by_genre_resource" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_by_genre_resource"
             android:layout_width="0dp"

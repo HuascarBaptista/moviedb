@@ -13,6 +13,8 @@ import com.hebs.moviedb.domain.model.actions.GenreSectionActions
 import com.hebs.moviedb.presentation.base.BaseFragment
 import com.hebs.moviedb.presentation.detail.GenreListener
 import com.hebs.moviedb.presentation.genres.items.GenreTitleItem
+import com.hebs.moviedb.tools.hide
+import com.hebs.moviedb.tools.show
 import com.hebs.moviedb.tools.viewBinding
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -67,13 +69,21 @@ class SelectGenreFragment : BaseFragment(), GenreTitleItem.GenreSelectedListener
     }
 
     private fun updateGenres(genres: List<Genre>) {
-        val genresItems = genres.map {
-            GenreTitleItem(
-                it,
-                this
-            )
+        if (genres.isNotEmpty()) {
+            binding.recyclerViewSectionGenres.show()
+            binding.textViewDefaultOfflineMessage.hide()
+            val genresItems = genres.map {
+                GenreTitleItem(
+                    it,
+                    this
+                )
+            }
+            groupieAdapter.addAll(genresItems)
+        } else {
+            binding.recyclerViewSectionGenres.hide()
+            binding.textViewDefaultOfflineMessage.show()
+
         }
-        groupieAdapter.addAll(genresItems)
     }
 
     override fun onGenreSelected(genre: Genre) {

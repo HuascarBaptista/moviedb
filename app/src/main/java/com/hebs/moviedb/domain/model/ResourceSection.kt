@@ -8,9 +8,7 @@ data class ResourceSection(
     val categoryName: String,
     val categoryType: SectionType,
     val resources: List<Resource>,
-) : Parcelable {
-    fun isValid() = resources.isNotEmpty()
-}
+) : Parcelable
 
 enum class SectionType {
     POPULAR_MOVIES, POPULAR_TV_SHOWS, TOP_RATED_MOVIES, TOP_RATED_TV_SHOWS, SEARCH_MOVIES, SEARCH_TV_SHOW, SEARCH_MIX, BY_GENRE_MOVIES, BY_GENRE_TV_SHOWS;

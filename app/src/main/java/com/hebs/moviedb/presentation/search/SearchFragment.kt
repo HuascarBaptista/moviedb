@@ -113,7 +113,9 @@ class SearchFragment : BaseFragment(), CarouselResourceItem.ResourceSelectedList
                 )
             }
             groupieAdapter.update(searchItems)
+            binding.textViewDefaultOfflineMessage.hide()
         } else {
+            binding.textViewDefaultOfflineMessage.show()
             binding.recyclerViewSearchResource.hide()
         }
     }

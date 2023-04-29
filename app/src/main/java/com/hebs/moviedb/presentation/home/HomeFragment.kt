@@ -13,6 +13,8 @@ import com.hebs.moviedb.domain.model.actions.HomeSectionActions
 import com.hebs.moviedb.presentation.base.BaseFragment
 import com.hebs.moviedb.presentation.detail.DetailListener
 import com.hebs.moviedb.presentation.home.items.CarouselResourceItem
+import com.hebs.moviedb.tools.hide
+import com.hebs.moviedb.tools.show
 import com.hebs.moviedb.tools.viewBinding
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,13 +71,20 @@ class HomeFragment : BaseFragment(), CarouselResourceItem.ResourceSelectedListen
     }
 
     private fun updateSections(sections: Set<ResourceSection>) {
-        val sectionsItems = sections.map {
-            CarouselResourceItem(
-                it,
-                this
-            )
+        if(sections.isNotEmpty()){
+            val sectionsItems = sections.map {
+                CarouselResourceItem(
+                    it,
+                    this
+                )
+            }
+            groupieAdapter.update(sectionsItems)
+            binding.textViewDefaultOfflineMessage.hide()
+            binding.recyclerViewHomeSection.show()
+        } else {
+            binding.textViewDefaultOfflineMessage.show()
+            binding.recyclerViewHomeSection.hide()
         }
-        groupieAdapter.update(sectionsItems)
     }
 
     override fun onItemSelected(resource: Resource) {

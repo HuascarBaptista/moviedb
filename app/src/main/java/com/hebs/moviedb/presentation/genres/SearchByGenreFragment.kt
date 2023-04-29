@@ -15,6 +15,8 @@ import com.hebs.moviedb.domain.model.actions.GenreSectionActions
 import com.hebs.moviedb.presentation.base.BaseFragment
 import com.hebs.moviedb.presentation.detail.DetailListener
 import com.hebs.moviedb.presentation.home.items.CarouselResourceItem
+import com.hebs.moviedb.tools.hide
+import com.hebs.moviedb.tools.show
 import com.hebs.moviedb.tools.viewBinding
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -80,13 +82,21 @@ class SearchByGenreFragment : BaseFragment(), CarouselResourceItem.ResourceSelec
     }
 
     private fun updateSections(sections: Set<ResourceSection>) {
-        val sectionsItems = sections.map {
-            CarouselResourceItem(
-                it,
-                this
-            )
+        if (sections.isNotEmpty()) {
+            binding.recyclerViewByGenreResource.show()
+            binding.textViewDefaultOfflineMessage.hide()
+
+            val sectionsItems = sections.map {
+                CarouselResourceItem(
+                    it,
+                    this
+                )
+            }
+            groupieAdapter.update(sectionsItems)
+        } else {
+            binding.recyclerViewByGenreResource.hide()
+            binding.textViewDefaultOfflineMessage.show()
         }
-        groupieAdapter.update(sectionsItems)
     }
 
     override fun onItemSelected(resource: Resource) {

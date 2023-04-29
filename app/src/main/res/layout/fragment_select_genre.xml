@@ -9,6 +9,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textView_default_offline_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/general_margin"
+            android:text="@string/empty_search"
+            android:textAppearance="@style/TextAppearance.EmptyMessage"
+            app:layout_constraintBottom_toBottomOf="@+id/recyclerView_section_genres"
+            app:layout_constraintEnd_toEndOf="@+id/recyclerView_section_genres"
+            app:layout_constraintStart_toStartOf="@+id/recyclerView_section_genres"
+            app:layout_constraintTop_toTopOf="@id/recyclerView_section_genres" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_section_genres"

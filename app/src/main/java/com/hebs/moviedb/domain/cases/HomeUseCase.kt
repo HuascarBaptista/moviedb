@@ -24,7 +24,6 @@ class HomeUseCase @Inject constructor(
             topRatedMoviesSingle,
             topRatedTvShowsSingle
         )
-            .filter { it.isValid() }
             .map { listOf(it) }
     }
 }
