@@ -33,7 +33,7 @@ class GenreViewModel @Inject constructor(
                 },
                     {
                         hideLoading()
-                        sendError(it.message)
+                        sendError()
                     }
                 )
         )
@@ -53,7 +53,7 @@ class GenreViewModel @Inject constructor(
                 },
                     {
                         hideLoading()
-                        sendError(it.message)
+                        sendError()
                     }
                 )
         )

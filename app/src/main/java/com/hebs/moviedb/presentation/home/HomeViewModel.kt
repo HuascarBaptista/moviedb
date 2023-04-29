@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(
                     },
                     {
                         hideLoading()
-                        sendError(it.message)
+                        sendError()
                     }
                 )
         )

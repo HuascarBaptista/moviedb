@@ -32,7 +32,7 @@ class DetailViewModel @Inject constructor(
                     },
                     {
                         hideLoading()
-                        sendError(it.message)
+                        sendError()
                     }
                 )
         )

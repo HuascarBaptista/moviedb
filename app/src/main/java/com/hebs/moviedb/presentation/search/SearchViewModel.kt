@@ -35,7 +35,7 @@ class SearchViewModel @Inject constructor(
                 },
                     {
                         hideLoading()
-                        sendError(it.message)
+                        sendError()
                     }
                 )
         )

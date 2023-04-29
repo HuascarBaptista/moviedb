@@ -24,9 +24,7 @@ open class BaseViewModel : ViewModel() {
         disposable.clear()
     }
 
-    fun sendError(message: String?) {
-        message?.let {
-            _baseFragmentActionLiveData.postValue(BaseViewActions.Error(message))
-        }
+    fun sendError() {
+        _baseFragmentActionLiveData.postValue(BaseViewActions.Error)
     }
 }
