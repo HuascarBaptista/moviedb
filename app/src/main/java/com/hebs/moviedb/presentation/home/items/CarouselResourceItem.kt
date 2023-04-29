@@ -27,7 +27,6 @@ class CarouselResourceItem(
         if (resourceSection.resources.isNotEmpty()) {
             initRecycler(viewBinding)
             viewBinding.textViewSectionTitle.text = resourceSection.categoryName
-            groupieAdapter.update(mapResourcesItems(resourceSection.resources))
         } else {
             viewBinding.textViewSectionTitle.hide()
             viewBinding.recyclerViewSectionVideos.hide()
@@ -37,7 +36,10 @@ class CarouselResourceItem(
     private fun initRecycler(viewBinding: ItemCarouselSectionResourcesBinding) {
         if (shouldShowResourcesInGrid) {
             viewBinding.recyclerViewSectionVideos.layoutManager =
-                GridLayoutManager(viewBinding.root.context, 2)
+                GridLayoutManager(viewBinding.root.context, 3)
+            groupieAdapter.update(mapResourcesSearchItems(resourceSection.resources))
+        } else {
+            groupieAdapter.update(mapResourcesItems(resourceSection.resources))
         }
         viewBinding.recyclerViewSectionVideos.adapter = groupieAdapter
     }
@@ -45,8 +47,15 @@ class CarouselResourceItem(
     private fun mapResourcesItems(resources: List<Resource>): List<SectionVideoItem> {
         return resources.map {
             SectionVideoItem(
-                it,
-                resourceSelectedListener
+                it, resourceSelectedListener
+            )
+        }
+    }
+
+    private fun mapResourcesSearchItems(resources: List<Resource>): List<SearchSectionVideoItem> {
+        return resources.map {
+            SearchSectionVideoItem(
+                it, resourceSelectedListener
             )
         }
     }

@@ -144,7 +144,7 @@ class TvShowRepositoryImpl @Inject constructor(
             }
 
     override fun search(query: String): Observable<ResourceSection> {
-        val categoryType = SectionType.SEARCH
+        val categoryType = SectionType.SEARCH_TV_SHOW
         val categoryName = context.getString(R.string.section_title_search, query)
         return tvShowRemoteDataSource.search(query).map {
             apiResponseToResourceSectionMapper.map(

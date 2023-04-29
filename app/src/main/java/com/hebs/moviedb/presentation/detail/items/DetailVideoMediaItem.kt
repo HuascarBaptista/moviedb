@@ -16,7 +16,6 @@ class DetailVideoMediaItem(
     override fun initializeViewBinding(view: View) = ItemVideoMediaBinding.bind(view)
 
     override fun bind(viewBinding: ItemVideoMediaBinding, position: Int) {
-        viewBinding.textViewTitle.text = videoMedia.name
         viewBinding.root.setOnClickListener {
             videoMedia.youtubeURL.let {
                 resourceSelectedListener.onVideoMediaSelected(it)

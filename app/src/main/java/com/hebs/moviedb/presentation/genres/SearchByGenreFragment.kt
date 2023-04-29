@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.hebs.moviedb.databinding.FragmentSearchByGenreBinding
@@ -14,15 +12,15 @@ import com.hebs.moviedb.domain.model.Genre
 import com.hebs.moviedb.domain.model.Resource
 import com.hebs.moviedb.domain.model.ResourceSection
 import com.hebs.moviedb.domain.model.actions.GenreSectionActions
+import com.hebs.moviedb.presentation.base.BaseFragment
 import com.hebs.moviedb.presentation.detail.DetailListener
 import com.hebs.moviedb.presentation.home.items.CarouselResourceItem
-import com.hebs.moviedb.tools.hide
 import com.hebs.moviedb.tools.viewBinding
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchByGenreFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener {
+class SearchByGenreFragment : BaseFragment(), CarouselResourceItem.ResourceSelectedListener {
 
     private var listener: DetailListener? = null
 
@@ -30,20 +28,23 @@ class SearchByGenreFragment : Fragment(), CarouselResourceItem.ResourceSelectedL
         navArgs<SearchByGenreFragmentArgs>().value.genre
     }
 
+    private val genreViewModel: GenreViewModel by viewModels()
+
+    private val groupieAdapter = GroupieAdapter()
+
     private val binding by viewBinding {
         FragmentSearchByGenreBinding.inflate(
             LayoutInflater.from(requireContext())
         )
     }
 
+    override fun getViewModel() = genreViewModel
+    override fun getRefreshLayout() = binding.swipeRefreshLayout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = binding.root
 
-    private val viewModel: GenreViewModel by viewModels()
-
-    private val groupieAdapter = GroupieAdapter()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -54,28 +55,28 @@ class SearchByGenreFragment : Fragment(), CarouselResourceItem.ResourceSelectedL
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
         initRecyclerView()
+        initView()
+    }
+
+    private fun initView() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            genreViewModel.getByGenre(genre)
+        }
     }
 
     private fun initRecyclerView() {
         binding.recyclerViewByGenreResource.adapter = groupieAdapter
     }
 
-    private fun initViewModel() {
-        viewModel.genresLiveData.observe(viewLifecycleOwner) {
+    override fun initViewModel() {
+        super.initViewModel()
+        genreViewModel.genresLiveData.observe(viewLifecycleOwner) {
             when (it) {
-                is GenreSectionActions.HideLoading -> binding.progressBarLoading.hide()
                 is GenreSectionActions.UpdateSections -> updateSections(it.sections)
-                is GenreSectionActions.Error -> showError(it.message)
                 else -> {}
             }
         }
-        viewModel.getByGenre(genre)
-    }
-
-    private fun showError(message: String) {
-        if (message.isNotBlank()) {
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        }
+        genreViewModel.getByGenre(genre)
     }
 
     private fun updateSections(sections: Set<ResourceSection>) {

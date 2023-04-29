@@ -12,7 +12,9 @@ class SectionTypeMapper @Inject constructor() {
             SectionType.POPULAR_TV_SHOWS -> SectionEntityType.POPULAR_TV_SHOWS
             SectionType.TOP_RATED_MOVIES -> SectionEntityType.TOP_RATED_MOVIES
             SectionType.TOP_RATED_TV_SHOWS -> SectionEntityType.TOP_RATED_TV_SHOWS
-            SectionType.SEARCH -> SectionEntityType.SEARCH
+            SectionType.SEARCH_MOVIES -> SectionEntityType.SEARCH_MOVIES
+            SectionType.SEARCH_MIX -> SectionEntityType.SEARCH_MIX
+            SectionType.SEARCH_TV_SHOW -> SectionEntityType.SEARCH_MOVIES
             SectionType.BY_GENRE_MOVIES -> SectionEntityType.BY_GENRE_MOVIES
             SectionType.BY_GENRE_TV_SHOWS -> SectionEntityType.BY_GENRE_TV_SHOWS
         }
@@ -24,7 +26,9 @@ class SectionTypeMapper @Inject constructor() {
             SectionEntityType.POPULAR_TV_SHOWS -> SectionType.POPULAR_TV_SHOWS
             SectionEntityType.TOP_RATED_MOVIES -> SectionType.TOP_RATED_MOVIES
             SectionEntityType.TOP_RATED_TV_SHOWS -> SectionType.TOP_RATED_TV_SHOWS
-            SectionEntityType.SEARCH -> SectionType.SEARCH
+            SectionEntityType.SEARCH_MOVIES -> SectionType.SEARCH_MOVIES
+            SectionEntityType.SEARCH_MIX -> SectionType.SEARCH_MIX
+            SectionEntityType.SEARCH_TV_SHOW -> SectionType.SEARCH_TV_SHOW
             SectionEntityType.BY_GENRE_MOVIES -> SectionType.BY_GENRE_MOVIES
             SectionEntityType.BY_GENRE_TV_SHOWS -> SectionType.BY_GENRE_TV_SHOWS
         }

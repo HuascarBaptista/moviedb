@@ -17,7 +17,9 @@ enum class SectionEntityType {
     TOP_RATED_TV_SHOWS,
     BY_GENRE_MOVIES,
     BY_GENRE_TV_SHOWS,
-    SEARCH;
+    SEARCH_MOVIES,
+    SEARCH_TV_SHOW,
+    SEARCH_MIX;
 
     fun isPopularType(): Boolean {
         return when (this) {
@@ -35,7 +37,7 @@ enum class SectionEntityType {
 
     fun isSearchType(): Boolean {
         return when (this) {
-            SEARCH -> true
+            SEARCH_MIX, SEARCH_MOVIES, SEARCH_TV_SHOW -> true
             else -> false
         }
     }

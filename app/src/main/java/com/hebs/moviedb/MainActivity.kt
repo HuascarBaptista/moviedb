@@ -40,8 +40,16 @@ class MainActivity : AppCompatActivity(), DetailListener, GenreListener {
                 R.id.navigation_genres_fragment
             )
         )
+        setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)
         getNavigationView().setupWithNavController(navController)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        val navController = navHostFragment.navController
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     override fun showDetail(resource: Resource) {

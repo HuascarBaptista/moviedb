@@ -74,6 +74,7 @@ dependencies {
     implementation presentationDependencies.groupieViewBinding
     implementation presentationDependencies.shimmer
     implementation presentationDependencies.glide
+    implementation presentationDependencies.swipeRefresh
 
     // Tests
     testImplementation testDependencies.junit

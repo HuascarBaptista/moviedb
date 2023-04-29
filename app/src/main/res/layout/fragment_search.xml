@@ -1,74 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_refresh_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.genres.SelectGenreFragment">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/editText_search_query"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/general_margin"
+        android:background="@color/search_box_background"
+        android:drawableEnd="@drawable/ic_search"
+        android:drawablePadding="@dimen/small_margin"
+        android:hint="@string/search_hint"
+        android:imeOptions="actionSearch"
+        android:inputType="textCapWords"
+        android:padding="@dimen/small_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_divider_height"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:background="@color/white_50"
+        app:layout_constraintEnd_toEndOf="@+id/editText_search_query"
+        app:layout_constraintStart_toStartOf="@+id/editText_search_query"
+        app:layout_constraintTop_toBottomOf="@+id/editText_search_query" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_search_resource"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/small_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_divider"
+        tools:listitem="@layout/item_carousel_section_resources" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textView_empty_search"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/editText_search_query"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/general_margin"
-            android:background="@color/search_box_background"
-            android:drawableEnd="@drawable/ic_search"
-            android:drawablePadding="@dimen/small_margin"
-            android:hint="@string/search_hint"
-            android:inputType="textCapWords"
-            android:padding="@dimen/small_margin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </androidx.appcompat.widget.AppCompatEditText>
-
-        <View
-            android:id="@+id/searchInputDivider"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_divider_height"
-            android:layout_marginTop="@dimen/vertical_margin"
-            android:background="@color/white_50"
-            app:layout_constraintEnd_toEndOf="@+id/editText_search_query"
-            app:layout_constraintStart_toStartOf="@+id/editText_search_query"
-            app:layout_constraintTop_toBottomOf="@+id/editText_search_query" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_search_resource"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchInputDivider"
-            tools:listitem="@layout/item_carousel_section_resources" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textView_empty_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/general_margin"
-            android:text="@string/empty_search"
-            android:textAppearance="@style/TextAppearance.EmptyMessage"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ProgressBar
-            android:id="@+id/progressBar_loading"
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/general_margin"
+        android:text="@string/empty_search"
+        android:textAppearance="@style/TextAppearance.EmptyMessage"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

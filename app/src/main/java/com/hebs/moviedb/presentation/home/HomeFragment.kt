@@ -5,22 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.hebs.moviedb.databinding.FragmentHomeBinding
 import com.hebs.moviedb.domain.model.Resource
 import com.hebs.moviedb.domain.model.ResourceSection
 import com.hebs.moviedb.domain.model.actions.HomeSectionActions
+import com.hebs.moviedb.presentation.base.BaseFragment
 import com.hebs.moviedb.presentation.detail.DetailListener
 import com.hebs.moviedb.presentation.home.items.CarouselResourceItem
-import com.hebs.moviedb.tools.hide
 import com.hebs.moviedb.tools.viewBinding
 import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener {
+class HomeFragment : BaseFragment(), CarouselResourceItem.ResourceSelectedListener {
 
     private var listener: DetailListener? = null
 
@@ -30,9 +28,11 @@ class HomeFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener {
         )
     }
 
-    private val viewModel: HomeViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
 
     private val groupieAdapter = GroupieAdapter()
+    override fun getViewModel() = homeViewModel
+    override fun getRefreshLayout() = binding.swipeRefreshLayout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,28 +46,26 @@ class HomeFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
+        initView()
+    }
+
+    private fun initView() {
         initRecyclerView()
+        getRefreshLayout().setOnRefreshListener {
+            homeViewModel.loadMovies()
+        }
     }
 
     private fun initRecyclerView() {
         binding.recyclerViewHomeSection.adapter = groupieAdapter
     }
 
-    private fun initViewModel() {
-        viewModel.sectionsLiveData.observe(viewLifecycleOwner) {
-                        when (it) {
-                            is HomeSectionActions.HideLoading -> binding.progressBarLoading.hide()
-                            is HomeSectionActions.UpdateSections -> updateSections(it.sections)
-                            is HomeSectionActions.Error -> showError(it.message)
-                        }
+    override fun initViewModel() {
+        super.initViewModel()
+        homeViewModel.sectionsLiveData.observe(viewLifecycleOwner) {
+            if (it is HomeSectionActions.UpdateSections) updateSections(it.sections)
         }
-        viewModel.loadMovies()
-    }
-
-    private fun showError(message: String) {
-        if (message.isNotBlank()) {
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        }
+        homeViewModel.loadMovies()
     }
 
     private fun updateSections(sections: Set<ResourceSection>) {

@@ -13,8 +13,9 @@ class SearchUseCase @Inject constructor(
     private val tvShowRepository: TvShowRepository
 ) {
     fun search(query: String): Observable<ResourceSection> {
-        val searchMovies = moviesRepository.search(query)
-        val searchTvShows = tvShowRepository.search(query)
+        val safeQuery = query.trim()
+        val searchMovies = moviesRepository.search(safeQuery)
+        val searchTvShows = tvShowRepository.search(safeQuery)
 
         return Observable.zip(
             searchMovies,
@@ -23,12 +24,11 @@ class SearchUseCase @Inject constructor(
             val resources = (movies.resources + tvShows.resources).distinct()
                 .sortedByDescending { it.rating }
             ResourceSection(
-                categoryType = SectionType.SEARCH,
+                categoryType = SectionType.SEARCH_MIX,
                 resources = resources,
                 categoryName = movies.categoryName
             )
         }
-            .filter { it.isValid() }
             .applyIoSchedulers()
             .flatMap {
                 moviesRepository.storeQueryResult(it)

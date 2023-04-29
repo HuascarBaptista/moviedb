@@ -8,7 +8,9 @@
     <dimen name="text_small">14sp</dimen>
     <dimen name="text_standard">16sp</dimen>
     <dimen name="text_big">18sp</dimen>
+    <dimen name="text_huge">20sp</dimen>
 
+    <dimen name="mini_card_height">160dp</dimen>
     <dimen name="card_height">200dp</dimen>
     <dimen name="media_width">220dp</dimen>
     <dimen name="card_radius">8dp</dimen>

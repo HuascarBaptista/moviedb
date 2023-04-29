@@ -3,6 +3,8 @@ package com.hebs.moviedb.presentation.search
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -10,9 +12,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hebs.moviedb.R
@@ -20,6 +20,7 @@ import com.hebs.moviedb.databinding.FragmentSearchBinding
 import com.hebs.moviedb.domain.model.Resource
 import com.hebs.moviedb.domain.model.ResourceSection
 import com.hebs.moviedb.domain.model.actions.SearchSectionActions
+import com.hebs.moviedb.presentation.base.BaseFragment
 import com.hebs.moviedb.presentation.detail.DetailListener
 import com.hebs.moviedb.presentation.home.items.CarouselResourceItem
 import com.hebs.moviedb.tools.hide
@@ -31,11 +32,12 @@ import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener {
+class SearchFragment : BaseFragment(), CarouselResourceItem.ResourceSelectedListener {
 
+    private var lastQuery: String = ""
     private var listener: DetailListener? = null
 
-    private val viewModel: SearchViewModel by viewModels()
+    private val searchViewModel: SearchViewModel by viewModels()
 
     private val groupieAdapter = GroupieAdapter()
 
@@ -45,17 +47,31 @@ class SearchFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener
         )
     }
 
+    private val handler = Handler(Looper.getMainLooper())
+
+    private val updateQueryRunnable = Runnable { searchViewModel.search(lastQuery) }
+    override fun getViewModel() = searchViewModel
+    override fun getRefreshLayout() = null
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ) = binding.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initTextListener()
         initViewModel()
+        initView()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        hideKeyboard()
+    }
+
+    private fun initView() {
+        initTextListener()
         initRecyclerView()
-        initSearchQueryAction()
+        requestFocusOpenKeyboard()
     }
 
     private fun requestFocusOpenKeyboard() {
@@ -65,10 +81,10 @@ class SearchFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener
                 binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 binding.editTextSearchQuery.requestFocus()
             }
+        }.also {
+            showKeyboard()
         })
-        showKeyboard()
     }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = context as? DetailListener
@@ -81,42 +97,31 @@ class SearchFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener
         }
     }
 
-    private fun initViewModel() {
-        viewModel.searchLiveData.observe(viewLifecycleOwner) {
-                        when (it) {
-                            is SearchSectionActions.ShowLoading -> binding.progressBarLoading.show()
-                            is SearchSectionActions.HideLoading -> binding.progressBarLoading.hide()
-                            is SearchSectionActions.UpdateSearch -> updateSearch(it.searchResults)
-                            is SearchSectionActions.Error -> showError(it.message)
-                        }
+    override fun initViewModel() {
+        super.initViewModel()
+        searchViewModel.searchLiveData.observe(viewLifecycleOwner) {
+            if (it is SearchSectionActions.UpdateSearch) updateSearchResults(it.searchResults)
         }
     }
 
-    private fun showError(message: String) {
-        if (message.isNotBlank()) {
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    private fun updateSearchResults(search: Set<ResourceSection>) {
+        if (search.isNotEmpty()) {
+            binding.recyclerViewSearchResource.show()
+            val searchItems = search.map {
+                CarouselResourceItem(
+                    it, this, true
+                )
+            }
+            groupieAdapter.update(searchItems)
+        } else {
+            binding.recyclerViewSearchResource.hide()
         }
-    }
-
-    private fun updateSearch(search: Set<ResourceSection>) {
-        binding.recyclerViewSearchResource.show()
-        val searchItems = search.map {
-            CarouselResourceItem(
-                it,
-                this,
-                true
-            )
-        }
-        groupieAdapter.update(searchItems)
-        binding.recyclerViewSearchResource.invalidate()
     }
 
     private fun initTextListener() {
         binding.editTextSearchQuery.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-
             override fun afterTextChanged(currentText: Editable) {
                 updateIcon(currentText.isNotEmpty())
                 updateQuery(currentText.toString())
@@ -150,13 +155,18 @@ class SearchFragment : Fragment(), CarouselResourceItem.ResourceSelectedListener
     }
 
     private fun updateQuery(query: String) {
-        if (query.isBlank()) {
-            initSearchQueryAction()
-            binding.progressBarLoading.hide()
-        } else {
-            viewModel.search(query = query)
+        if (isSameLastQuery(query)) {
+            lastQuery = query.trim()
+            if (query.isBlank()) {
+                initSearchQueryAction()
+            } else {
+                handler.removeCallbacks(updateQueryRunnable)
+                handler.postDelayed(updateQueryRunnable, 300)
+            }
         }
     }
+
+    private fun isSameLastQuery(query: String) = lastQuery.trim().equals(query.trim(), true).not()
 
     private fun isTappingTextDrawable(event: MotionEvent) =
         event.action == MotionEvent.ACTION_UP && event.rawX >= (binding.editTextSearchQuery.right - binding.editTextSearchQuery.compoundDrawables[2].bounds.width())

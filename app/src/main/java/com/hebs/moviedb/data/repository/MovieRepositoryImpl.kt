@@ -144,7 +144,7 @@ class MovieRepositoryImpl @Inject constructor(
             }
 
     override fun search(query: String): Observable<ResourceSection> {
-        val categoryType = SectionType.SEARCH
+        val categoryType = SectionType.SEARCH_MOVIES
         val categoryName = context.getString(R.string.section_title_search, query)
         return movieRemoteDataSource.search(query).map {
             apiResponseToResourceSectionMapper.map(

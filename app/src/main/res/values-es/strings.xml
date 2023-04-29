@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Hebs Movie Db</string>
+    <string name="section_unavailable">Lo sentimos, hubo un error.\nIntenta nuevamente en unos minutos.</string>
+    <string name="menu_home">Inicio</string>
+    <string name="menu_search">Buscar</string>
+    <string name="menu_genres">Géneros</string>
+    <string name="title_home">Inicio</string>
+    <string name="title_search">Buscar</string>
+    <string name="title_genres">Géneros</string>
+    <string name="title_detail">Detalle</string>
+    <string name="empty_search">Lo sentimos\nSin resultados</string>
+    <string name="subtitle_overview">Resumen</string>
+    <string name="title_videos">Trailers</string>
+    <string name="section_title_top_rated_movies">Películas mejor calificadas</string>
+    <string name="section_title_top_rated_tv_shows">Series mejor calificadas</string>
+    <string name="section_title_popular_movies">Películas populares</string>
+    <string name="section_title_popular_tv_shows">Series populares</string>
+    <string name="section_title_search">Búsqueda de películas y series: %1$s</string>
+    <string name="search_hint">¿Qué deseas buscar?</string>
+    <string name="section_title_by_genre_movies">Películas del género %1$s</string>
+    <string name="section_title_by_genre_tv_shows">Series del género %1$s</string>
+</resources>

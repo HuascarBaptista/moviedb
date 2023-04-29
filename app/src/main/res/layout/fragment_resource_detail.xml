@@ -1,121 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScroll_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/general_margin">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageView_cover"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/detail_cover_image_height"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            tools:src="@color/placeholder" />
-
-        <View
-            android:id="@+id/resource_guideline"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:constraint_referenced_ids="imageView_cover"
-            app:layout_constraintBottom_toBottomOf="@id/imageView_cover"
-            app:layout_constraintTop_toTopOf="@id/imageView_cover" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView_poster"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/card_height"
-            android:layout_margin="@dimen/general_margin"
-            app:cardCornerRadius="@dimen/card_radius"
-            app:cardElevation="@dimen/card_elevation"
-            app:layout_constraintDimensionRatio="w,2:3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/resource_guideline">
+            android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imageView_poster"
+                android:id="@+id/imageView_cover"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/detail_cover_image_height"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
+                tools:src="@color/placeholder" />
+
+            <View
+                android:id="@+id/resource_guideline"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </androidx.cardview.widget.CardView>
+                android:layout_height="@dimen/view_divider_height"
+                android:orientation="horizontal"
+                app:constraint_referenced_ids="imageView_cover"
+                app:layout_constraintBottom_toBottomOf="@id/imageView_cover"
+                app:layout_constraintTop_toTopOf="@id/imageView_cover" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textView_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/general_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cardView_poster"
-            app:layout_constraintTop_toBottomOf="@id/imageView_cover"
-            tools:text="Resource Title" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView_poster"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/card_height"
+                android:layout_margin="@dimen/general_margin"
+                app:cardCornerRadius="@dimen/card_radius"
+                app:cardElevation="@dimen/card_elevation"
+                app:layout_constraintDimensionRatio="w,2:3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resource_guideline">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageView_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star"
-            app:layout_constraintEnd_toEndOf="@+id/textView_rating"
-            app:layout_constraintStart_toStartOf="@+id/textView_rating"
-            app:layout_constraintTop_toBottomOf="@+id/textView_rating" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageView_poster"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </androidx.cardview.widget.CardView>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textView_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/general_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/textView_title"
-            app:layout_constraintTop_toBottomOf="@+id/textView_title"
-            tools:text="5.4" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textView_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/general_margin"
+                android:textAppearance="@style/TextAppearance.HeadlineBase"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cardView_poster"
+                app:layout_constraintTop_toBottomOf="@id/imageView_cover"
+                tools:text="Resource Title" />
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/main_section_barrier"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="cardView_poster,imageView_rating" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageView_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_star"
+                app:layout_constraintEnd_toEndOf="@+id/textView_rating"
+                app:layout_constraintStart_toStartOf="@+id/textView_rating"
+                app:layout_constraintTop_toBottomOf="@+id/textView_rating" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textView_overview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/general_margin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_section_barrier" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textView_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/general_margin"
+                android:textAppearance="@style/TextAppearance.TitleSection"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/textView_title"
+                app:layout_constraintTop_toBottomOf="@+id/textView_title"
+                tools:text="5.4" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textView_title_media"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/general_margin"
-            android:text="@string/title_media"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView_overview" />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/main_section_barrier"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="cardView_poster,imageView_rating" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_media"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/general_margin"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_title_media"
-            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_video_media" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textView_overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/general_margin"
+                android:textAppearance="@style/TextAppearance.GeneralText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/main_section_barrier" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textView_title_media"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/general_margin"
+                android:text="@string/title_videos"
+                android:textAppearance="@style/TextAppearance.TitleListSmallItem"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView_overview" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_media"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/small_margin"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView_title_media"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_video_media" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
