@@ -18,9 +18,9 @@ interface ResourceDataSource {
     @Transaction
     @Query(
         """
-        SELECT section_resource.* 
-        FROM section_resource
-        WHERE section_resource.categoryName = :categoryName
+        SELECT * 
+        FROM section
+        WHERE categoryName = :categoryName
         """
     )
     fun getSectionWithResourcesByCategoryName(categoryName: String): Single<SectionWithResources>

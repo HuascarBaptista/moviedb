@@ -62,12 +62,12 @@ class SearchByGenreFragment : Fragment(), CarouselResourceItem.ResourceSelectedL
 
     private fun initViewModel() {
         viewModel.genresLiveData.observe(viewLifecycleOwner) {
-                        when (it) {
-                            is GenreSectionActions.HideLoading -> binding.progressBarLoading.hide()
-                            is GenreSectionActions.UpdateSections -> updateSections(it.sections)
-                            is GenreSectionActions.Error -> showError(it.message)
-                            else -> {}
-                        }
+            when (it) {
+                is GenreSectionActions.HideLoading -> binding.progressBarLoading.hide()
+                is GenreSectionActions.UpdateSections -> updateSections(it.sections)
+                is GenreSectionActions.Error -> showError(it.message)
+                else -> {}
+            }
         }
         viewModel.getByGenre(genre)
     }

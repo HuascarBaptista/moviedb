@@ -6,6 +6,7 @@ import com.hebs.moviedb.R
 import com.hebs.moviedb.databinding.ItemCarouselSectionResourcesBinding
 import com.hebs.moviedb.domain.model.Resource
 import com.hebs.moviedb.domain.model.ResourceSection
+import com.hebs.moviedb.tools.hide
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.viewbinding.BindableItem
 
@@ -23,9 +24,14 @@ class CarouselResourceItem(
         ItemCarouselSectionResourcesBinding.bind(view)
 
     override fun bind(viewBinding: ItemCarouselSectionResourcesBinding, position: Int) {
-        initRecycler(viewBinding)
-                viewBinding.textViewSectionTitle.text = resourceSection.categoryName
-        groupieAdapter.update(mapResourcesItems(resourceSection.resources))
+        if (resourceSection.resources.isNotEmpty()) {
+            initRecycler(viewBinding)
+            viewBinding.textViewSectionTitle.text = resourceSection.categoryName
+            groupieAdapter.update(mapResourcesItems(resourceSection.resources))
+        } else {
+            viewBinding.textViewSectionTitle.hide()
+            viewBinding.recyclerViewSectionVideos.hide()
+        }
     }
 
     private fun initRecycler(viewBinding: ItemCarouselSectionResourcesBinding) {
