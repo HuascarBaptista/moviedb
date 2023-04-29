@@ -19,4 +19,5 @@
     <string name="search_hint">What do you want to search for?</string>
     <string name="section_title_by_genre_movies">Movies in the %1$s genre</string>
     <string name="section_title_by_genre_tv_shows">TV Shows in the %1$s genre</string>
+    <string name="rating_range" translatable="false">%1$s/10</string>
 </resources>

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.hebs.moviedb.R
 import com.hebs.moviedb.databinding.FragmentResourceDetailBinding
 import com.hebs.moviedb.domain.model.Resource
 import com.hebs.moviedb.domain.model.VideoMedia
@@ -72,7 +73,11 @@ class DetailFragment : BaseFragment(), DetailVideoMediaItem.VideoMediaListener {
             resource.posterImageUrl?.let { imageViewPoster.loadImage(it) }
             textViewTitle.text = resource.title
             if (resource.score > 0) {
-                textViewRating.text = resource.score.toString()
+                textViewRating.text =
+                    requireContext().getString(
+                        R.string.rating_range,
+                        String.format("%.1f", resource.score)
+                    )
             } else {
                 textViewRating.hide()
                 imageViewRating.hide()
