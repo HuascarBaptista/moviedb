@@ -50,7 +50,7 @@ class DetailViewModelTest {
     }
 
     @Test
-    fun `when detail called, emits actions`() {
+    fun `when videos called, emits actions`() {
         every { detailUseCase.getVideosMedia(resource) } returns Single.just(listOf())
 
         val observer = mockk<Observer<DetailViewActions>>(relaxed = true)
@@ -66,7 +66,7 @@ class DetailViewModelTest {
     }
 
     @Test
-    fun `when detail called and fails, emits error`() {
+    fun `when videos called and fails, emits error`() {
         every { detailUseCase.getVideosMedia(resource) } returns Single.error(Throwable())
 
         val observer = mockk<Observer<DetailViewActions>>(relaxed = true)
