@@ -4,6 +4,7 @@ import android.view.View
 import com.hebs.moviedb.R
 import com.hebs.moviedb.databinding.ItemVideoMediaBinding
 import com.hebs.moviedb.domain.model.VideoMedia
+import com.hebs.moviedb.tools.animateItem
 import com.hebs.moviedb.tools.loadImage
 import com.xwray.groupie.viewbinding.BindableItem
 
@@ -16,6 +17,7 @@ class DetailVideoMediaItem(
     override fun initializeViewBinding(view: View) = ItemVideoMediaBinding.bind(view)
 
     override fun bind(viewBinding: ItemVideoMediaBinding, position: Int) {
+        viewBinding.animateItem()
         viewBinding.root.setOnClickListener {
             videoMedia.youtubeURL.let {
                 resourceSelectedListener.onVideoMediaSelected(it)

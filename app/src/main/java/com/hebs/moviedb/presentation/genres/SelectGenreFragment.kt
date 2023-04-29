@@ -1,17 +1,16 @@
 package com.hebs.moviedb.presentation.genres
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hebs.moviedb.databinding.FragmentSelectGenreBinding
 import com.hebs.moviedb.domain.model.Genre
 import com.hebs.moviedb.domain.model.actions.GenreSectionActions
 import com.hebs.moviedb.presentation.base.BaseFragment
-import com.hebs.moviedb.presentation.detail.GenreListener
 import com.hebs.moviedb.presentation.genres.items.GenreTitleItem
 import com.hebs.moviedb.tools.hide
 import com.hebs.moviedb.tools.show
@@ -23,7 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class SelectGenreFragment : BaseFragment(), GenreTitleItem.GenreSelectedListener {
 
     private val genreViewModel: GenreViewModel by viewModels()
-    private var listener: GenreListener? = null
     private val groupieAdapter = GroupieAdapter()
 
     private val binding by viewBinding {
@@ -38,11 +36,6 @@ class SelectGenreFragment : BaseFragment(), GenreTitleItem.GenreSelectedListener
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = binding.root
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = context as? GenreListener
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -87,7 +80,7 @@ class SelectGenreFragment : BaseFragment(), GenreTitleItem.GenreSelectedListener
     }
 
     override fun onGenreSelected(genre: Genre) {
+        findNavController().navigate(SelectGenreFragmentDirections.actionGenresToByGenre(genre))
         binding.recyclerViewSectionGenres.scrollTo(0, 0)
-        listener?.genreSelected(genre)
     }
 }

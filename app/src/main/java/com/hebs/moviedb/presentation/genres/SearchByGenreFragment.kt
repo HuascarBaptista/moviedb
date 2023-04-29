@@ -1,11 +1,11 @@
 package com.hebs.moviedb.presentation.genres
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.hebs.moviedb.databinding.FragmentSearchByGenreBinding
 import com.hebs.moviedb.domain.model.Genre
@@ -13,7 +13,6 @@ import com.hebs.moviedb.domain.model.Resource
 import com.hebs.moviedb.domain.model.ResourceSection
 import com.hebs.moviedb.domain.model.actions.GenreSectionActions
 import com.hebs.moviedb.presentation.base.BaseFragment
-import com.hebs.moviedb.presentation.detail.DetailListener
 import com.hebs.moviedb.presentation.home.items.CarouselResourceItem
 import com.hebs.moviedb.tools.hide
 import com.hebs.moviedb.tools.show
@@ -23,8 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SearchByGenreFragment : BaseFragment(), CarouselResourceItem.ResourceSelectedListener {
-
-    private var listener: DetailListener? = null
 
     private val genre: Genre by lazy {
         navArgs<SearchByGenreFragmentArgs>().value.genre
@@ -46,12 +43,6 @@ class SearchByGenreFragment : BaseFragment(), CarouselResourceItem.ResourceSelec
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = binding.root
-
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = context as? DetailListener
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -100,6 +91,6 @@ class SearchByGenreFragment : BaseFragment(), CarouselResourceItem.ResourceSelec
     }
 
     override fun onItemSelected(resource: Resource) {
-        listener?.showDetail(resource)
+        findNavController().navigate(SearchByGenreFragmentDirections.actionByGenreToDetail(resource))
     }
 }

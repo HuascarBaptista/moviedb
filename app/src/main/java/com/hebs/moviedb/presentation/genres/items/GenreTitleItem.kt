@@ -1,6 +1,7 @@
 package com.hebs.moviedb.presentation.genres.items
 
 import android.view.View
+import android.view.animation.AnimationUtils
 import com.hebs.moviedb.R
 import com.hebs.moviedb.databinding.ItemSelectGenreTitleBinding
 import com.hebs.moviedb.domain.model.Genre
@@ -17,6 +18,8 @@ class GenreTitleItem(
         ItemSelectGenreTitleBinding.bind(view)
 
     override fun bind(viewBinding: ItemSelectGenreTitleBinding, position: Int) {
+        val fadeInAnimation = AnimationUtils.loadAnimation(viewBinding.root.context, R.anim.fade_in)
+        viewBinding.root.startAnimation(fadeInAnimation)
         viewBinding.textViewGenreTitle.text = genre.name
         viewBinding.root.setOnClickListener {
             genre.id.let {

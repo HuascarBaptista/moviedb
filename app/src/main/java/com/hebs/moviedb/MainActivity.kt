@@ -7,16 +7,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.hebs.moviedb.databinding.ActivityMainBinding
-import com.hebs.moviedb.domain.model.Genre
-import com.hebs.moviedb.domain.model.Resource
-import com.hebs.moviedb.presentation.detail.DetailFragmentArgs
-import com.hebs.moviedb.presentation.detail.DetailListener
-import com.hebs.moviedb.presentation.detail.GenreListener
-import com.hebs.moviedb.presentation.genres.SearchByGenreFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), DetailListener, GenreListener {
+class MainActivity : AppCompatActivity() {
 
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
@@ -50,19 +44,5 @@ class MainActivity : AppCompatActivity(), DetailListener, GenreListener {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
         return navController.navigateUp() || super.onSupportNavigateUp()
-    }
-
-    override fun showDetail(resource: Resource) {
-        val arguments = DetailFragmentArgs(
-            resource = resource
-        ).toBundle()
-        navController.navigate(R.id.navigation_detail_fragment, arguments)
-    }
-
-    override fun genreSelected(genre: Genre) {
-        val arguments = SearchByGenreFragmentArgs(
-            genre = genre
-        ).toBundle()
-        navController.navigate(R.id.navigation_by_genre_fragment, arguments)
     }
 }

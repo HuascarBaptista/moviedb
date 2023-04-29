@@ -1,7 +1,6 @@
 package com.hebs.moviedb.presentation.search
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,6 +13,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hebs.moviedb.R
 import com.hebs.moviedb.databinding.FragmentSearchBinding
@@ -21,7 +21,6 @@ import com.hebs.moviedb.domain.model.Resource
 import com.hebs.moviedb.domain.model.ResourceSection
 import com.hebs.moviedb.domain.model.actions.SearchSectionActions
 import com.hebs.moviedb.presentation.base.BaseFragment
-import com.hebs.moviedb.presentation.detail.DetailListener
 import com.hebs.moviedb.presentation.home.items.CarouselResourceItem
 import com.hebs.moviedb.tools.hide
 import com.hebs.moviedb.tools.hideKeyboard
@@ -35,7 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class SearchFragment : BaseFragment(), CarouselResourceItem.ResourceSelectedListener {
 
     private var lastQuery: String = ""
-    private var listener: DetailListener? = null
 
     private val searchViewModel: SearchViewModel by viewModels()
 
@@ -84,10 +82,6 @@ class SearchFragment : BaseFragment(), CarouselResourceItem.ResourceSelectedList
         }.also {
             showKeyboard()
         })
-    }
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = context as? DetailListener
     }
 
     private fun initRecyclerView() {
@@ -182,6 +176,6 @@ class SearchFragment : BaseFragment(), CarouselResourceItem.ResourceSelectedList
     }
 
     override fun onItemSelected(resource: Resource) {
-        listener?.showDetail(resource)
+        findNavController().navigate(SearchFragmentDirections.actionSearchToDetail(resource))
     }
 }

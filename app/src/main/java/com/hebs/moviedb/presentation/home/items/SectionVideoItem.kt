@@ -4,6 +4,7 @@ import android.view.View
 import com.hebs.moviedb.R
 import com.hebs.moviedb.databinding.ItemSectionVideoBinding
 import com.hebs.moviedb.domain.model.Resource
+import com.hebs.moviedb.tools.animateItem
 import com.hebs.moviedb.tools.loadImage
 import com.xwray.groupie.viewbinding.BindableItem
 
@@ -18,6 +19,8 @@ class SectionVideoItem(
         ItemSectionVideoBinding.bind(view)
 
     override fun bind(viewBinding: ItemSectionVideoBinding, position: Int) {
+        viewBinding.animateItem()
+
         viewBinding.textViewVideoTitle.text = resource.title
         viewBinding.root.setOnClickListener {
             resource.id.let {

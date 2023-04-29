@@ -4,6 +4,7 @@ import android.view.View
 import com.hebs.moviedb.R
 import com.hebs.moviedb.databinding.ItemSearchSectionVideoBinding
 import com.hebs.moviedb.domain.model.Resource
+import com.hebs.moviedb.tools.animateItem
 import com.hebs.moviedb.tools.loadImage
 import com.xwray.groupie.viewbinding.BindableItem
 
@@ -17,6 +18,8 @@ class SearchSectionVideoItem(
     override fun initializeViewBinding(view: View) = ItemSearchSectionVideoBinding.bind(view)
 
     override fun bind(viewBinding: ItemSearchSectionVideoBinding, position: Int) {
+        viewBinding.animateItem()
+
         viewBinding.textViewVideoTitle.text = resource.title
         viewBinding.root.setOnClickListener {
             resource.id.let {
