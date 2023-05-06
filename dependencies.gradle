@@ -1,0 +1,96 @@
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+ext {
+    // Android
+    androidMinSdkVersion = 29
+    androidTargetSdkVersion = 33
+    androidCompileSdkVersion = 33
+    hiltVersion = '2.44'
+    rxJavaVersion = '3.1.5'
+    rxAndroidVersion = '3.0.0'
+
+    // Presentation
+    coreKtxVersion = '1.9.0'
+    appCompatVersion = '1.6.1'
+    materialVersion = '1.5.0'
+    constraintLayout = '2.1.4'
+    lifecycleVersion = '2.5.1'
+    navigationVersion = '2.5.3'
+    recyclerViewVersion = '1.2.1'
+    cardViewVersion = '1.0.0'
+    groupieVersion = '2.10.1'
+    shimmerVersion = '0.5.0'
+    glideVersion = '4.15.1'
+    swipeRefreshLayout = '1.1.0'
+
+    // Network
+    retrofitVersion = '2.9.0'
+    okHttpVersion = '4.11.0'
+
+    // Tests
+    jUnitVersion = '5.8.2'
+    mockitoVersion = '4.11.0'
+    coreTestVersion = '2.2.0'
+    mockkVersion = '1.13.3'
+
+    // Data
+    roomVersion = "2.4.0"
+
+    // App
+    appDependencies = [
+            hilt        : "com.google.dagger:hilt-android:${hiltVersion}",
+            hiltCompiler: "com.google.dagger:hilt-compiler:${hiltVersion}",
+            rxJava      : "io.reactivex.rxjava3:rxjava:${rxJavaVersion}",
+            rxAndroid   : "io.reactivex.rxjava3:rxandroid:${rxAndroidVersion}",
+            rxAdapter   : "com.github.akarnokd:rxjava3-retrofit-adapter:${rxAndroidVersion}",
+    ]
+
+    presentationDependencies = [
+            coreKtx           : "androidx.core:core-ktx:${coreKtxVersion}",
+            appCompat         : "androidx.appcompat:appcompat:${appCompatVersion}",
+            material          : "com.google.android.material:material:${materialVersion}",
+            constraintLayout  : "androidx.constraintlayout:constraintlayout:${constraintLayout}",
+            liveData          : "androidx.lifecycle:lifecycle-livedata-ktx:${lifecycleVersion}",
+            viewModel         : "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycleVersion}",
+            navigationFragment: "androidx.navigation:navigation-fragment-ktx:${navigationVersion}",
+            navigationUI      : "androidx.navigation:navigation-ui-ktx:${navigationVersion}",
+            recyclerView      : "androidx.recyclerview:recyclerview:${recyclerViewVersion}",
+            cardView          : "androidx.cardview:cardview:${cardViewVersion}",
+            groupie           : "com.github.lisawray.groupie:groupie:${groupieVersion}",
+            groupieViewBinding: "com.github.lisawray.groupie:groupie-viewbinding:${groupieVersion}",
+            shimmer: "com.facebook.shimmer:shimmer:${shimmerVersion}",
+            glide: "com.github.bumptech.glide:glide:${glideVersion}",
+            swipeRefresh: "androidx.swiperefreshlayout:swiperefreshlayout:${swipeRefreshLayout}"
+    ]
+
+    networkDependencies = [
+            retrofit     : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+            retrofitGson : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
+            okHttp       : "com.squareup.okhttp3:okhttp:${okHttpVersion}",
+            okHttpLogging: "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}"
+    ]
+
+    testDependencies = [
+            junit   : "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}",
+            junitEngine  : "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}",
+            mockito: "org.mockito:mockito-core:${mockitoVersion}",
+            mockitoJunit: "org.mockito:mockito-junit-jupiter:${mockitoVersion}",
+            coreTester: "androidx.arch.core:core-testing:${coreTestVersion}",
+            mockitoKotlin: "com.nhaarman.mockitokotlin2:mockito-kotlin:${coreTestVersion}",
+            mockk              : "io.mockk:mockk:${mockkVersion}",
+            mockkAndroid       : "io.mockk:mockk-android:${mockkVersion}"
+    ]
+    dataDependencies = [
+            room          : "androidx.room:room-runtime:${roomVersion}",
+            roomCompiler  : "androidx.room:room-compiler:${roomVersion}",
+            roomExtensions: "androidx.room:room-ktx:${roomVersion}",
+            roomRx: "androidx.room:room-rxjava3:${roomVersion}"
+    ]
+}

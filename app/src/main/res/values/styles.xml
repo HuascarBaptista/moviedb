@@ -1,0 +1,43 @@
+<resources>
+
+    <style name="TextAppearance.Base" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="android:textColor">?colorOnBackground</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:textSize">@dimen/text_huge</item>
+    </style>
+
+    <style name="TextAppearance.Headline" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="android:textColor">?colorOnBackground</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:textSize">@dimen/text_huge</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.TitleListItem" parent="TextAppearance.Base">
+        <item name="android:textSize">@dimen/text_standard</item>
+        <item name="android:lineSpacingExtra">0sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.GeneralText" parent="TextAppearance.Base">
+        <item name="android:textSize">@dimen/text_standard</item>
+        <item name="android:lineSpacingExtra">0sp</item>
+    </style>
+
+    <style name="TextAppearance.TitleListSmallItem" parent="TextAppearance.Base">
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:lineSpacingExtra">0sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.TitleSection" parent="TextAppearance.Base">
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.EmptyMessage" parent="TextAppearance.Base">
+        <item name="android:textSize">@dimen/text_big</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>

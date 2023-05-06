@@ -1,0 +1,107 @@
+plugins {
+    id "com.android.application"
+    id 'kotlin-android'
+    id 'kotlin-parcelize'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+android {
+    namespace 'com.hebs.moviedb'
+    compileSdk 33
+
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+    defaultConfig {
+        applicationId "com.hebs.moviedb"
+        minSdkVersion globalConfiguration["androidMinSdkVersion"]
+        targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionCode 1
+        versionName "1.0"
+
+        buildConfigField "String", "TMDB_BASE_URL", "\"https://api.themoviedb.org\""
+        buildConfigField "String", "TMDB_IMAGE_BASE_URL", "\"https://image.tmdb.org/t/p/original\""
+        buildConfigField "String", "TMDB_API_KEY_CODE", "\"cc6e751764a8263bedc959df0534d07d\""
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation":"$projectDir/schemas".toString(),
+                        "room.incremental":"true"
+                ]
+            }
+        }
+    }
+    buildFeatures {
+        viewBinding true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+}
+
+dependencies {
+    // Networking
+    implementation networkDependencies.retrofit
+    implementation networkDependencies.retrofitGson
+    implementation networkDependencies.okHttp
+    implementation networkDependencies.okHttpLogging
+
+    // Android Presentation
+    implementation presentationDependencies.coreKtx
+    implementation presentationDependencies.appCompat
+    implementation presentationDependencies.material
+    implementation presentationDependencies.constraintLayout
+    implementation presentationDependencies.liveData
+    implementation presentationDependencies.viewModel
+    implementation presentationDependencies.navigationFragment
+    implementation presentationDependencies.navigationUI
+    implementation presentationDependencies.recyclerView
+    implementation presentationDependencies.cardView
+    implementation presentationDependencies.groupie
+    implementation presentationDependencies.groupieViewBinding
+    implementation presentationDependencies.shimmer
+    implementation presentationDependencies.glide
+    implementation presentationDependencies.swipeRefresh
+
+    // Dependency injection
+    implementation appDependencies.hilt
+    kapt appDependencies.hiltCompiler
+
+    // Reactive
+    implementation appDependencies.rxJava
+    implementation appDependencies.rxAndroid
+    implementation appDependencies.rxAdapter
+
+    implementation dataDependencies.room
+    kapt dataDependencies.roomCompiler
+    implementation dataDependencies.roomExtensions
+    implementation dataDependencies.roomRx
+
+    // Tests
+    testImplementation testDependencies.junit
+    testImplementation testDependencies.junitEngine
+    testImplementation testDependencies.mockito
+    testImplementation testDependencies.mockitoJunit
+    testImplementation testDependencies.coreTester
+    testImplementation testDependencies.mockitoKotlin
+    testImplementation testDependencies.mockk
+    testImplementation testDependencies.mockkAndroid
+
+}
+
+kapt {
+    correctErrorTypes true
+}
